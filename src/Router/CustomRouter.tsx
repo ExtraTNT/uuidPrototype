@@ -3,12 +3,14 @@ import { NotFound } from "../pages/NotFound"
 import { Home } from "../pages/Home"
 
 import { Store } from "../pages/Store/Store"
+import { Account } from "../pages/Account/Account"
 
 export const CustomRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/account">
+          <Route path="" element={<Account />} />
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/store">

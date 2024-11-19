@@ -10,8 +10,13 @@ export const Home = () => {
   return (
     <ScrollArea h="100%">
       <Center p="xl">
-        <Blockquote color="blue" cite="- Peer2Peer Team" mt="xl" w="75%">
-          test hahaha
+        <Blockquote
+          color="blue"
+          cite="- The evil guy behind the tree"
+          mt="xl"
+          w="75%"
+        >
+          hahaha I will eat you, hahaha
         </Blockquote>
       </Center>
     </ScrollArea>
