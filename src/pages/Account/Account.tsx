@@ -63,9 +63,8 @@ export const Account = () => {
     <>
       <Center>
         <Stack align="center" justify="center">
-          <Avatar src={accountMock.avatar} size="xl" />
           <Group align="center" style={{ position: "relative" }}>
-            <Avatar src={accountMock.avatar} radius="xl" size={100} />
+            <Avatar src={accountMock.avatar} radius="xl" size="xl" />
             <FileButton
               onChange={(e) => e && getBase64(e, updateAvatar)}
               accept="image/png,image/jpeg,image/jpg"
@@ -75,7 +74,8 @@ export const Account = () => {
                   {...props}
                   size="lg"
                   radius="xl"
-                  variant="default"
+                  variant="transparent"
+                  color="white"
                   style={{
                     position: "absolute",
                     bottom: 0,
