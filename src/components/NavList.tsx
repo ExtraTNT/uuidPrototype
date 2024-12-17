@@ -1,13 +1,6 @@
 import { Avatar, NavLink, ScrollArea, Stack } from "@mantine/core"
-import {
-  IconBuildingStore,
-  IconCalendarTime,
-  IconChartDots,
-  IconHome2,
-  IconMonkeybar,
-  IconSchool,
-} from "@tabler/icons-react"
-import { accountMock } from "../Mock/Account"
+import { IconBuildingStore, IconHome2 } from "@tabler/icons-react"
+import { getAccountMock } from "../Mock/Account"
 
 export const NavList = () => {
   return (
@@ -16,11 +9,11 @@ export const NavList = () => {
         <NavLink
           href="/account"
           label={
-            accountMock.email.length > 33
-              ? accountMock.email.substring(0, 30) + "..."
-              : accountMock.email
+            getAccountMock().email.length > 33
+              ? getAccountMock().email.substring(0, 30) + "..."
+              : getAccountMock().email
           }
-          leftSection={<Avatar radius="xl" src={accountMock.avatar} />}
+          leftSection={<Avatar radius="xl" src={getAccountMock().avatar} />}
         />
         <NavLink
           href="/"

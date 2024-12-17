@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 export const Store = () => {
   const navigate = useNavigate()
 
-  useEffect(() => navigate("events"), [])
+  useEffect(() => navigate("events"), [navigate])
 
   return <></>
 }
