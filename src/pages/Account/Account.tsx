@@ -11,6 +11,8 @@ import {
   Tooltip,
   FileButton,
   ActionIcon,
+  NumberInput,
+  useComputedColorScheme,
 } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { getAccountMock, AccountMockType } from "../../Mock/Account"
@@ -58,13 +60,16 @@ export const Account = () => {
     set("account", accountPatched)
   }
   const updateAvatar = (value: string) => updateAccount("avatar", value)
+  const computedColorScheme = useComputedColorScheme("light", {
+    getInitialValueInEffect: true,
+  })
 
   return (
     <>
       <Center>
         <Stack align="center" justify="center">
           <Group align="center" style={{ position: "relative" }}>
-            <Avatar src={accountMock.avatar} radius="xl" size="xl" />
+            <Avatar src={accountMock.avatar} radius={75} size={150} />
             <FileButton
               onChange={(e) => e && getBase64(e, updateAvatar)}
               accept="image/png,image/jpeg,image/jpg"
@@ -72,15 +77,18 @@ export const Account = () => {
               {(props) => (
                 <ActionIcon
                   {...props}
-                  size="lg"
+                  size="xl"
                   radius="xl"
-                  variant="transparent"
-                  color="white"
+                  variant="default"
+                  color={computedColorScheme === "light" ? "black" : "white"}
                   style={{
                     position: "absolute",
                     bottom: 0,
                     right: 5,
-                    border: "2px solid white",
+                    border:
+                      computedColorScheme === "light"
+                        ? "2px solid black"
+                        : "2px solid white",
                   }}
                 >
                   <IconCamera size={24} />
@@ -88,15 +96,37 @@ export const Account = () => {
               )}
             </FileButton>
           </Group>
-          <Text
-            style={{ cursor: "pointer" }}
-            onClick={(e) =>
-              (window.location.href = "mailto:" + accountMock.email)
-            }
-          >
-            {accountMock.email}
-          </Text>
-          <Group>
+          <Tooltip label={helpText[accountMock.wheelchair]} openDelay={1000}>
+            <Stack align="stretch" justify="flex-start" gap="sd" w="100%">
+              <Text size="sm" fw={500} display="inline-block">
+                Level of Disability
+              </Text>
+              <Slider
+                min={0}
+                max={4}
+                w="100%"
+                pb={"12px"}
+                value={accountMock.wheelchair}
+                onChange={(e) => updateAccountNumber("wheelchair", e)}
+                step={1}
+                marks={[
+                  { value: 0, label: "Fully mobile" },
+                  { value: 1, label: "Reduced mobility" },
+                  { value: 2, label: "Wheelchair, no restrictions" },
+                  { value: 3, label: "Wheelchair, restrictions" },
+                  { value: 4, label: "Wheelchair, not-mobile" },
+                ]}
+                styles={{ markLabel: { display: "none" } }}
+              />
+            </Stack>
+          </Tooltip>
+          <TextInput
+            w="100%"
+            value={accountMock.email}
+            onChange={(e) => updateAccount("email", e.target.value)}
+            label="Email"
+          />
+          <Group grow w="100%">
             <TextInput
               value={accountMock.name}
               onChange={(e) => updateAccount("name", e.target.value)}
@@ -109,39 +139,45 @@ export const Account = () => {
             />
           </Group>
           <Group grow w="100%">
-            {
-              <DateInput
-                value={new Date(accountMock.birthday)}
-                onChange={(e) =>
-                  e && updateAccountDate("birthday", new Date(e.toISOString()))
-                }
-                label="Birthday"
-              />
-            }
-            <Tooltip label={helpText[accountMock.wheelchair]} openDelay={1000}>
-              <Stack align="stretch" justify="flex-start" gap="sd">
-                <Text size="sm" fw={500} display="inline-block">
-                  Level of Disability
-                </Text>
-                <Slider
-                  min={0}
-                  max={4}
-                  pb={"12px"}
-                  value={accountMock.wheelchair}
-                  onChange={(e) => updateAccountNumber("wheelchair", e)}
-                  step={1}
-                  marks={[
-                    { value: 0, label: "Fully mobile" },
-                    { value: 1, label: "Reduced mobility" },
-                    { value: 2, label: "Wheelchair, no restrictions" },
-                    { value: 3, label: "Wheelchair, restrictions" },
-                    { value: 4, label: "Wheelchair, not-mobile" },
-                  ]}
-                  styles={{ markLabel: { display: "none" } }}
-                />
-              </Stack>
-            </Tooltip>
+            <DateInput
+              w="100%"
+              value={new Date(accountMock.birthday)}
+              onChange={(e) =>
+                e && updateAccountDate("birthday", new Date(e.toISOString()))
+              }
+              label="Birthday"
+            />
+            <TextInput
+              value={accountMock.country}
+              onChange={(e) => updateAccount("country", e.target.value)}
+              label="Country"
+            />
           </Group>
+          <Group grow w="100%">
+            <NumberInput
+              value={accountMock.plz}
+              onChange={(e) =>
+                updateAccountNumber(
+                  "plz",
+                  typeof e == "number" ? e : Number.parseInt(e)
+                )
+              }
+              label="PLZ"
+              allowDecimal={false}
+              hideControls
+            />
+            <TextInput
+              value={accountMock.place}
+              onChange={(e) => updateAccount("place", e.target.value)}
+              label="Place"
+            />
+          </Group>
+          <TextInput
+            w="100%"
+            value={accountMock.address}
+            onChange={(e) => updateAccount("address", e.target.value)}
+            label="Address"
+          />
         </Stack>
       </Center>
     </>

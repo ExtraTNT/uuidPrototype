@@ -4,6 +4,8 @@ import { Home } from "../pages/Home"
 
 import { Store } from "../pages/Store/Store"
 import { Account } from "../pages/Account/Account"
+import { Events } from "../pages/Store/Events/Events"
+import { EventDetail } from "../pages/Store/Events/EventDetail"
 
 export const CustomRouter = () => {
   return (
@@ -14,8 +16,8 @@ export const CustomRouter = () => {
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/store">
-          <Route path="events" element={<>events</>} />
-          <Route path="events/:id" element={<>event x</>} />
+          <Route path="events" element={<Events />} />
+          <Route path="events/:id" element={<EventDetail />} />
           <Route path="" element={<Store />} />
         </Route>
         <Route path="/">
