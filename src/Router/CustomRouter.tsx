@@ -6,6 +6,8 @@ import { Store } from "../pages/Store/Store"
 import { Account } from "../pages/Account/Account"
 import { Events } from "../pages/Store/Events/Events"
 import { EventDetail } from "../pages/Store/Events/EventDetail"
+import { Loggin } from "../pages/Account/Loggin"
+import { Register } from "../pages/Account/Register"
 
 export const CustomRouter = () => {
   return (
@@ -13,6 +15,8 @@ export const CustomRouter = () => {
       <Routes>
         <Route path="/account">
           <Route path="" element={<Account />} />
+          <Route path="loggin" element={<Loggin />} />
+          <Route path="register" element={<Register />} />
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/store">

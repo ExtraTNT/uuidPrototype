@@ -13,6 +13,7 @@ import {
   ActionIcon,
   NumberInput,
   useComputedColorScheme,
+  PasswordInput,
 } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { getAccountMock, AccountMockType } from "../../Mock/Account"
@@ -39,7 +40,8 @@ export const Account = () => {
       | "place"
       | "address"
       | "country"
-      | "avatar",
+      | "avatar"
+      | "password",
     value: string
   ) => {
     let accountPatched = { ...accountMock }
@@ -125,6 +127,12 @@ export const Account = () => {
             value={accountMock.email}
             onChange={(e) => updateAccount("email", e.target.value)}
             label="Email"
+          />
+          <PasswordInput
+            w="100%"
+            value={accountMock.password}
+            onChange={(e) => updateAccount("password", e.target.value)}
+            label="Password"
           />
           <Group grow w="100%">
             <TextInput

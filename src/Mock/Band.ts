@@ -1,3 +1,5 @@
+import { get, set } from "../services/localObjectStorage"
+
 export type BandMockType = {
   id: string
   name: string
@@ -6,7 +8,7 @@ export type BandMockType = {
   img: string
 }
 
-export const bandMocks: BandMockType[] = [
+export const bandMock: BandMockType[] = [
   {
     id: "1",
     name: "Eluveitie",
@@ -79,3 +81,9 @@ export const bandMocks: BandMockType[] = [
     img: "",
   },
 ]
+export const getBandMock = () => {
+  const data = get("band")
+  if (data) return data
+  set("band", bandMock)
+  return bandMock
+}

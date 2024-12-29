@@ -19,6 +19,7 @@ export type LocationMockType = {
   detailText: string
   accessibilityDetailText: string
   accessibilityRating: number
+  standingPlaces: boolean
   img: string[]
   map: MapElement[]
 }
@@ -34,6 +35,7 @@ export const locationMock: LocationMockType[] = [
     accessibilityDetailText:
       "Ramps and accessible seating available on the ground floor. Upper floors are accessible with difficulty.",
     accessibilityRating: 3,
+    standingPlaces: false,
     img: [],
     map: [
       {
@@ -106,6 +108,7 @@ export const locationMock: LocationMockType[] = [
     accessibilityDetailText:
       "Ground floor is accessible, but upper floors lack elevators.",
     accessibilityRating: 3,
+    standingPlaces: true,
     img: [],
     map: [
       {
@@ -153,6 +156,7 @@ export const locationMock: LocationMockType[] = [
     accessibilityDetailText:
       "Wide pathways and excellent staff support for accessibility.",
     accessibilityRating: 5,
+    standingPlaces: true,
     img: [],
     map: [
       {
@@ -176,7 +180,7 @@ export const locationMock: LocationMockType[] = [
   },
 ]
 
-export const getUserRatingMock = () => {
+export const getLocationMock = () => {
   const data = get("location")
   if (data) return data
   set("location", locationMock)
