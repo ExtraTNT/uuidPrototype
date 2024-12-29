@@ -19,7 +19,7 @@ export const bandMock: BandMockType[] = [
       "is both heavy and deeply atmospheric. Known for their powerful live performances and evocative lyrics, the band draws heavily " +
       "on themes of mythology, ancient history, and nature. Albums like 'Slania' and 'Helvetios' have cemented their place as pioneers " +
       "in the folk metal genre.",
-    img: "",
+    img: "https://eluveitie.ch/images/elu_slider_neu.jpeg",
   },
   {
     id: "2",
@@ -31,7 +31,7 @@ export const bandMock: BandMockType[] = [
       "historical accounts and letters from soldiers. The band combines aggressive riffs and blast beats with a haunting atmosphere, " +
       "creating a visceral experience. Their debut album, 'Menschenmühle,' was critically acclaimed for its ability to merge " +
       "unrelenting heaviness with poignant storytelling.",
-    img: "",
+    img: "https://www.metal-archives.com/images/3/5/4/0/3540483079_photo.jpg?4933",
   },
   {
     id: "3",
@@ -43,7 +43,7 @@ export const bandMock: BandMockType[] = [
       "thunderous riffs and Johan Hegg's iconic growling vocals. Known for their epic albums like 'Twilight of the Thunder God' " +
       "and 'Jomsviking,' the band has gained a massive following worldwide. Their live shows, complete with Viking ship stage props, " +
       "are as theatrical as they are ferocious.",
-    img: "",
+    img: "https://www.metal-archives.com/images/1/5/0/150_photo.jpg?2821",
   },
   {
     id: "4",
@@ -54,7 +54,7 @@ export const bandMock: BandMockType[] = [
       "Formed in 1981, Slayer's music is characterized by its blistering speed, aggressive riffs, and dark, controversial themes. " +
       "Albums like 'Reign in Blood' and 'Seasons in the Abyss' are considered landmarks in heavy metal history. The band's uncompromising " +
       "attitude and intense live performances have earned them a legendary status, influencing countless metal bands across generations.",
-    img: "",
+    img: "https://wallpaperaccess.com/full/1496102.jpg",
   },
   {
     id: "5",
@@ -66,7 +66,7 @@ export const bandMock: BandMockType[] = [
       "Albums like 'Among the Living' and 'Persistence of Time' are thrash classics, featuring fast tempos, sharp riffs, and biting lyrics. " +
       "The band is also credited with helping to popularize the crossover between metal and rap through their collaboration with Public Enemy " +
       "on 'Bring the Noise.' Their dynamic live performances and enduring appeal have kept them at the forefront of metal for decades.",
-    img: "",
+    img: "https://cdn.mos.cms.futurecdn.net/VaRe7tsp2jqiPxXXenWUMQ-1200-80.jpg",
   },
   {
     id: "6",
@@ -78,10 +78,10 @@ export const bandMock: BandMockType[] = [
       "heavy riffs, haunting melodies, and his unmistakable voice. Ozzy's persona, both on and off stage, has made him a cultural phenomenon. " +
       "Despite personal struggles and controversies, his influence on the heavy metal genre is unparalleled, earning him a rightful place in " +
       "the Rock and Roll Hall of Fame.",
-    img: "",
+    img: "https://i.pinimg.com/originals/c5/0c/fe/c50cfeb1a42835b36f72b9913b16df98.jpg",
   },
 ]
-export const getBandMock = () => {
+export const getBandMock = (): BandMockType[] => {
   const data = get("band")
   if (data) return data
   set("band", bandMock)

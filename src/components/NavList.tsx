@@ -1,13 +1,15 @@
-import { Avatar, NavLink, ScrollArea, Stack } from "@mantine/core"
+import { Avatar, Button, NavLink, ScrollArea, Stack } from "@mantine/core"
 import { IconBuildingStore, IconHome2 } from "@tabler/icons-react"
 import { getAccountMock } from "../Mock/Account"
 import { getLoggedInContextMock } from "../Mock/LoggedInContextMock"
+import { clear } from "../services/localObjectStorage"
 
 export const NavList = () => {
+  console.log(getLoggedInContextMock())
   return (
     <ScrollArea h="100%">
       <Stack>
-        {getLoggedInContextMock().LoggedIn ? (
+        {getLoggedInContextMock().loggedIn ? (
           <NavLink
             href="/account"
             label={
@@ -19,8 +21,8 @@ export const NavList = () => {
           />
         ) : (
           <NavLink
-            href="/account/loggin"
-            label="Loggin"
+            href="/account/login"
+            label="login"
             leftSection={<Avatar radius="xl" />}
           />
         )}
@@ -34,6 +36,7 @@ export const NavList = () => {
           label="Discover Events"
           leftSection={<IconBuildingStore size="1rem" stroke={1.5} />}
         />
+        <Button onClick={clear}>Clear</Button>
       </Stack>
     </ScrollArea>
   )

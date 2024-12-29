@@ -30,11 +30,11 @@ const accountMock: AccountMockType = {
   address: "Bach 34",
   country: "Switzerland",
   birthday: new Date(),
-  tickets: [],
+  tickets: ["1"],
   password: "1234",
 }
 
-export const getAccountMock = () => {
+export const getAccountMock = (): AccountMockType => {
   const data = get("account")
   if (data) return data
   set("account", accountMock)

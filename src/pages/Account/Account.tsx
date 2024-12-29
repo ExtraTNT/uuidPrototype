@@ -5,8 +5,6 @@ import {
   Stack,
   Group,
   TextInput,
-  Box,
-  SimpleGrid,
   Slider,
   Tooltip,
   FileButton,
@@ -14,6 +12,7 @@ import {
   NumberInput,
   useComputedColorScheme,
   PasswordInput,
+  Button,
 } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { getAccountMock, AccountMockType } from "../../Mock/Account"
@@ -21,8 +20,15 @@ import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { helpText } from "../../utils/wheelchairMap"
 import { set } from "../../services/localObjectStorage"
-import { IconCamera } from "@tabler/icons-react"
+import {
+  IconCamera,
+  IconDeviceFloppy,
+  IconLogout,
+  IconX,
+} from "@tabler/icons-react"
 import { getBase64 } from "../../utils/base64"
+import { notifications } from "@mantine/notifications"
+import { checkIcon } from "../../components/NotificationIcons"
 
 export const Account = () => {
   const navigate = useNavigate()
@@ -47,24 +53,55 @@ export const Account = () => {
     let accountPatched = { ...accountMock }
     accountPatched[key] = value
     setAccountMock(accountPatched)
-    set("account", accountPatched)
   }
   const updateAccountNumber = (key: "wheelchair" | "plz", value: number) => {
     let accountPatched = { ...accountMock }
     accountPatched[key] = value
     setAccountMock(accountPatched)
-    set("account", accountPatched)
   }
   const updateAccountDate = (key: "birthday", value: Date) => {
     let accountPatched = { ...accountMock }
     accountPatched[key] = value
     setAccountMock(accountPatched)
-    set("account", accountPatched)
   }
   const updateAvatar = (value: string) => updateAccount("avatar", value)
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
   })
+
+  const saveAccount = () => {
+    set("account", accountMock)
+    notifications.show({
+      title: "Save successful",
+      message: "Your account is up to date, enjoy",
+      icon: checkIcon,
+      color: "teal",
+      position: "top-center",
+    })
+  }
+
+  const discard = () => {
+    setAccountMock(getAccountMock())
+    notifications.show({
+      title: "Changes discarted",
+      message: "No more mistakes to see, enjoy",
+      icon: checkIcon,
+      color: "teal",
+      position: "top-center",
+    })
+  }
+
+  const logout = () => {
+    set("loggedInContext", { loggedIn: false })
+    navigate("/")
+    notifications.show({
+      title: "Logged Out",
+      message: "You are no longer logged in, enjoy",
+      icon: checkIcon,
+      color: "teal",
+      position: "top-center",
+    })
+  }
 
   return (
     <>
@@ -186,6 +223,30 @@ export const Account = () => {
             onChange={(e) => updateAccount("address", e.target.value)}
             label="Address"
           />
+          <Group grow w="100%" pt="xl">
+            <Button
+              variant="outline"
+              onClick={logout}
+              leftSection={<IconLogout size={14} />}
+            >
+              Log Out
+            </Button>
+            <Button
+              variant="outline"
+              onClick={discard}
+              leftSection={<IconX size={14} />}
+            >
+              Discard
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={saveAccount}
+              leftSection={<IconDeviceFloppy size={14} />}
+            >
+              Save
+            </Button>
+          </Group>
         </Stack>
       </Center>
     </>

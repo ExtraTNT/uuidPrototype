@@ -35,7 +35,7 @@ export const App = () => {
             direction="column"
             wrap="nowrap"
           >
-            <Title m="0" p="0">
+            <Title m="0" p="0" textWrap="nowrap">
               UUID Ticket Portal
             </Title>
           </Flex>

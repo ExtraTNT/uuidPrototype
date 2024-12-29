@@ -130,7 +130,7 @@ const userRatingMock: UserRatingMockType[] = [
   },
 ]
 
-export const getUserRatingMock = () => {
+export const getUserRatingMock = (): UserRatingMockType[] => {
   const data = get("rating")
   if (data) return data
   set("rating", userRatingMock)

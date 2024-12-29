@@ -7,12 +7,14 @@ type SetlistEntryType = {
 
 export type SetlistMockType = {
   id: string
+  name: string
   setlist: SetlistEntryType[]
 }
 export const setlistMock: SetlistMockType[] = [
   // Eluveitie
   {
     id: "1",
+    name: "Inis Mona Tour",
     setlist: [
       { song: "Inis Mona", time: "04:10" },
       { song: "Thousandfold", time: "03:45" },
@@ -23,6 +25,7 @@ export const setlistMock: SetlistMockType[] = [
   },
   {
     id: "2",
+    name: "Good Old Times",
     setlist: [
       { song: "Omnos", time: "03:45" },
       { song: "Quoth the Raven", time: "05:05" },
@@ -35,6 +38,7 @@ export const setlistMock: SetlistMockType[] = [
   // Kanonenfieber
   {
     id: "3",
+    name: "Menschenmühle",
     setlist: [
       { song: "Der letzte Flug", time: "05:25" },
       { song: "Dicke Bertha", time: "04:45" },
@@ -45,10 +49,11 @@ export const setlistMock: SetlistMockType[] = [
   },
   {
     id: "4",
+    name: "Wir im Graben",
     setlist: [
       { song: "Die Feuertaufe", time: "05:55" },
       { song: "In's Niemandsland", time: "04:20" },
-      { song: "Menschenmühle", time: "03:40" },
+      { song: "Menschenmühle", time: "06:10" },
       { song: "Gott mit der Kavallerie", time: "05:00" },
       { song: "Der Maulwurf", time: "05:20" },
     ],
@@ -57,6 +62,7 @@ export const setlistMock: SetlistMockType[] = [
   // Amon Amarth
   {
     id: "5",
+    name: "Guardian Tour",
     setlist: [
       { song: "Twilight of the Thunder God", time: "04:45" },
       { song: "Guardians of Asgaard", time: "04:30" },
@@ -67,6 +73,7 @@ export const setlistMock: SetlistMockType[] = [
   },
   {
     id: "6",
+    name: "On our way",
     setlist: [
       { song: "Deceiver of the Gods", time: "05:10" },
       { song: "Death in Fire", time: "04:55" },
@@ -79,6 +86,7 @@ export const setlistMock: SetlistMockType[] = [
   // Slayer
   {
     id: "7",
+    name: "Europe Tour",
     setlist: [
       { song: "Raining Blood", time: "04:14" },
       { song: "Angel of Death", time: "04:51" },
@@ -89,6 +97,7 @@ export const setlistMock: SetlistMockType[] = [
   },
   {
     id: "8",
+    name: "Black Magic",
     setlist: [
       { song: "Dead Skin Mask", time: "05:19" },
       { song: "Black Magic", time: "04:05" },
@@ -101,6 +110,7 @@ export const setlistMock: SetlistMockType[] = [
   // Anthrax
   {
     id: "9",
+    name: "Antisocial Tour",
     setlist: [
       { song: "Caught in a Mosh", time: "05:02" },
       { song: "Madhouse", time: "04:17" },
@@ -111,6 +121,7 @@ export const setlistMock: SetlistMockType[] = [
   },
   {
     id: "10",
+    name: "In the Dark Tour",
     setlist: [
       { song: "Got the Time", time: "03:44" },
       { song: "Bring the Noise", time: "03:33" },
@@ -123,6 +134,7 @@ export const setlistMock: SetlistMockType[] = [
   // Ozzy Osbourne
   {
     id: "11",
+    name: "Crazy Tour",
     setlist: [
       { song: "Crazy Train", time: "04:56" },
       { song: "Mr. Crowley", time: "05:02" },
@@ -133,6 +145,7 @@ export const setlistMock: SetlistMockType[] = [
   },
   {
     id: "12",
+    name: "I don't even know",
     setlist: [
       { song: "I Don't Know", time: "05:14" },
       { song: "Suicide Solution", time: "04:18" },
@@ -143,7 +156,7 @@ export const setlistMock: SetlistMockType[] = [
   },
 ]
 
-export const getSetlistMock = () => {
+export const getSetlistMock = (): SetlistMockType[] => {
   const data = get("setlist")
   if (data) return data
   set("setlist", setlistMock)
