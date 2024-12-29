@@ -23,6 +23,8 @@ type ExerciseCardProps = {
   id: string
   img: string
   date: string
+  place: string
+  country: string
   children?: React.ReactNode
 }
 
@@ -34,6 +36,8 @@ export default function StoreItem({
   img,
   price,
   date,
+  place,
+  country,
   children,
 }: ExerciseCardProps) {
   const computedColorScheme = useComputedColorScheme("light", {
@@ -41,7 +45,6 @@ export default function StoreItem({
   })
   const navigate = useNavigate()
 
-  console.log(img)
   return (
     <Stack
       bg={computedColorScheme === "dark" ? "dark" : "blue.2"}
@@ -59,7 +62,7 @@ export default function StoreItem({
               {title} - {tour}
             </Title>
             <Text>
-              {location} - {date}
+              {location} - {place} ({country}) - {date}
             </Text>
             <Tooltip
               openDelay={500}

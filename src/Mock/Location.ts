@@ -23,6 +23,9 @@ export type LocationMockType = {
   standingPlaces: boolean
   img: string[]
   map: MapElement[]
+  country: string
+  city: string
+  address: string
 }
 
 export const locationMock: LocationMockType[] = [
@@ -37,6 +40,9 @@ export const locationMock: LocationMockType[] = [
       "Ramps and accessible seating available on the ground floor. Upper floors are accessible with difficulty. Wheelchair users require a normal ticket, their companion (up to one) receives free admission.",
     accessibilityRating: 3,
     standingPlaces: false,
+    city: "Bern",
+    country: "CH",
+    address: "Mayhem 1",
     img: [],
     map: [
       {
@@ -109,6 +115,9 @@ export const locationMock: LocationMockType[] = [
       "Ground floor is accessible, but upper floors lack elevators. Seats reserved for wheelchair users and older People. Wheelchair users require a normal ticket.",
     accessibilityRating: 3,
     standingPlaces: true,
+    city: "Zürich",
+    country: "CH",
+    address: "Industriestrasse 64",
     img: [],
     map: [
       {
@@ -157,6 +166,9 @@ export const locationMock: LocationMockType[] = [
       "Wide pathways and excellent staff support for accessibility. Outdoor with a few seats for people with reduced mobility.",
     accessibilityRating: 5,
     standingPlaces: true,
+    city: "Belp",
+    country: "CH",
+    address: "Kuhweg 9",
     img: [],
     map: [
       {

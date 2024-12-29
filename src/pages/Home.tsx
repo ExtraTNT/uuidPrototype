@@ -1,24 +1,41 @@
 import {
   Avatar,
   Blockquote,
+  Box,
   Center,
+  Input,
   ScrollArea,
-  SimpleGrid,
+  Stack,
 } from "@mantine/core"
+import { IconSearch } from "@tabler/icons-react"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export const Home = () => {
+  const [search, setSearch] = useState("")
+
+  const navigate = useNavigate()
   return (
-    <ScrollArea h="100%">
+    <Box h="100%">
       <Center p="xl">
-        <Blockquote
-          color="blue"
-          cite="- The evil guy behind the tree"
-          mt="xl"
-          w="75%"
-        >
-          hahaha I will eat you, hahaha
-        </Blockquote>
+        <Input
+          w="50%"
+          size="xl"
+          radius="xl"
+          placeholder="Search - Band, Song, Location, Tour"
+          value={search}
+          onChange={(event) => setSearch(event.currentTarget.value)}
+          leftSection={<IconSearch size={16} />}
+          onKeyDown={(e) => {
+            console.log(e.key)
+            if (e.key.toLocaleLowerCase() === "enter")
+              navigate("/store/events/search/" + search)
+          }}
+        />
       </Center>
-    </ScrollArea>
+      <Blockquote color="blue" cite="- UUID Ticket Portal" mt="xl" w="75%">
+        We're trying to improfe
+      </Blockquote>
+    </Box>
   )
 }

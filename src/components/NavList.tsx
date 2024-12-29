@@ -36,7 +36,9 @@ export const NavList = () => {
           label="Discover Events"
           leftSection={<IconBuildingStore size="1rem" stroke={1.5} />}
         />
-        <Button onClick={clear}>Clear</Button>
+        <Button onClick={clear} m="lg">
+          DEBUG Clear Browser Storage
+        </Button>
       </Stack>
     </ScrollArea>
   )
