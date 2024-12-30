@@ -43,7 +43,9 @@ export default memo(function StoreItem({
   })
 
   const navigate = useNavigate()
-  const ticketIncluded = getAccountMock().tickets.includes(id)
+  const ticketIncluded = getAccountMock().tickets.some(
+    (t) => t.split(".")[0] === id
+  )
   const loggedIn = getLoggedInContextMock().loggedIn
 
   return (

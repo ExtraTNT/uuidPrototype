@@ -1,11 +1,9 @@
-import { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getEventMock } from "../../../Mock/Event"
 import { getBandMock } from "../../../Mock/Band"
 import { getSetlistMock } from "../../../Mock/SetList"
 import { getLocationMock } from "../../../Mock/Location"
 import {
-  BackgroundImage,
   Box,
   Image,
   Text,
@@ -14,7 +12,6 @@ import {
   Tabs,
   Title,
   useComputedColorScheme,
-  Flex,
   NavLink,
   Center,
   Group,
@@ -32,13 +29,19 @@ import {
   IconHandLoveYou,
   IconMap,
   IconMusic,
+  IconToiletPaper,
+  IconToolsKitchen2,
+  IconX,
 } from "@tabler/icons-react"
 import { helpText } from "../../../utils/wheelchairMap"
 import { getUserRatingMock } from "../../../Mock/UserRating"
 import { getAccountMock } from "../../../Mock/Account"
+import { getLoggedInContextMock } from "../../../Mock/LoggedInContextMock"
 
 export const EventDetail = () => {
   const navigate = useNavigate()
+  navigate.toString()
+  // TODO: remove, only exists to let my linter shut the fuck up, till i actually implement this shit
 
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
@@ -54,6 +57,18 @@ export const EventDetail = () => {
   )
 
   const iconStyle = { width: rem(16), height: rem(16) }
+
+  function getColor(accessibilityRating: number): string {
+    if (!getLoggedInContextMock().loggedIn) return "green"
+    const accessibility = getAccountMock().wheelchair
+    if (accessibility === 1 && accessibilityRating === 1) return "orange"
+    if (accessibility === 2 && accessibilityRating === 2) return "orange"
+
+    if (accessibility === 0 || accessibilityRating >= accessibility)
+      return "green"
+
+    return "red"
+  }
 
   return (
     <Box h="100%" p="md">
@@ -103,6 +118,7 @@ export const EventDetail = () => {
         </Tabs.List>
 
         <Tabs.Panel value="tickets">Ticket tab content</Tabs.Panel>
+        {/** TODO: Order things */}
 
         <Tabs.Panel value="location">
           <Title w="100%" ta="center" p="md">
@@ -125,7 +141,7 @@ export const EventDetail = () => {
               </Text>
             </Box>
             <ScrollArea mah={500} h="auto">
-              <Title order={2}>User ratings</Title>
+              <Title order={2}>User Ratings</Title>
               {reviews.map((v) => (
                 <Group wrap="nowrap" p="md">
                   <Avatar src={getAccountMock().avatar} radius="xl" size="lg" />
@@ -179,7 +195,7 @@ export const EventDetail = () => {
                 })()}
               >
                 <Group>
-                  <Text>Accessibility rating: </Text>
+                  <Text>Accessibility Rating: </Text>
                   <Rating value={location.accessibilityRating} readOnly />
                 </Group>
               </Tooltip>
@@ -191,7 +207,7 @@ export const EventDetail = () => {
                 }
               >
                 <Group>
-                  <Text>Standing accessibility: </Text>
+                  <Text>Standing Accessibility: </Text>
                   <Rating value={location.standignAccessibility + 1} readOnly />
                 </Group>
               </Tooltip>
@@ -206,6 +222,9 @@ export const EventDetail = () => {
               </Text>
             </Stack>
           </Center>
+          <Title order={2} px="md">
+            Images
+          </Title>
           <SimpleGrid
             cols={{ base: 1, "1200px": 2, "1800px": 3 }}
             p="md"
@@ -284,7 +303,63 @@ export const EventDetail = () => {
           </Stack>
         </Tabs.Panel>
 
-        <Tabs.Panel value="seats">Seats tab content</Tabs.Panel>
+        <Tabs.Panel value="seats">
+          {/** TODO: Tooltips, show more info */}
+          <Stack justify="flex-start" align="center" p="md">
+            <Title p="md">{location.name} - Seat Arangement</Title>
+            {location.map.map((v, i) => (
+              <Box>
+                <Title key={i + "slvl"} order={2} p="md" w="100%" ta="center">
+                  Level {i + 1}
+                </Title>
+                {v.map.map((v, i) => (
+                  <Group gap="xs" p="xs">
+                    {v.map((v, i) => (
+                      <Box
+                        key={v.number + v.type}
+                        w={28}
+                        p="2"
+                        bg={computedColorScheme === "dark" ? "dark" : "blue.2"}
+                        style={{ borderRadius: "4pt" }}
+                      >
+                        {v.type === "seat" && (
+                          <IconArmchair2
+                            size={24}
+                            color={
+                              event.seatsTaken.includes(v.number)
+                                ? "gray"
+                                : getColor(v.accessibilityRating)
+                            }
+                          />
+                        )}
+                        {v.type === "food" && (
+                          <IconToolsKitchen2 size={24} color="purple" />
+                        )}
+                        {v.type === "toilet" && (
+                          <IconToiletPaper size={24} color="blue" />
+                        )}
+                        {v.type === "empty" && <IconX size={24} />}
+                        <Text w="100%" ta="center">
+                          {v.number === 0 ? "-" : v.number}
+                        </Text>
+                      </Box>
+                    ))}
+                  </Group>
+                ))}
+                <Box
+                  key={i + "stage"}
+                  w="100%"
+                  bg={computedColorScheme === "dark" ? "green.9" : "green.2"}
+                  style={{ borderRadius: "4pt" }}
+                >
+                  <Text w="100%" ta="center">
+                    Stage
+                  </Text>
+                </Box>
+              </Box>
+            ))}
+          </Stack>
+        </Tabs.Panel>
       </Tabs>
     </Box>
   )

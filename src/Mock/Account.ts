@@ -30,7 +30,7 @@ const accountMock: AccountMockType = {
   address: "Bach 34",
   country: "Switzerland",
   birthday: new Date(),
-  tickets: ["1"],
+  tickets: ["1.2"], // event.seat
   password: "1234",
 }
 

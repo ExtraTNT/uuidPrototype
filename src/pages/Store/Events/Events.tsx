@@ -10,9 +10,9 @@ import {
   Flex,
   Tooltip,
 } from "@mantine/core"
-import { IconFilter, IconMeat, IconSearch } from "@tabler/icons-react"
+import { IconFilter, IconSearch } from "@tabler/icons-react"
 import { useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { getBandMock } from "../../../Mock/Band"
 import { getEventMock } from "../../../Mock/Event"
 import { getLocationMock } from "../../../Mock/Location"
@@ -21,11 +21,8 @@ import StoreItem from "../../../components/StoreItem"
 import { getLoggedInContextMock } from "../../../Mock/LoggedInContextMock"
 import { getAccountMock } from "../../../Mock/Account"
 import { useDisclosure } from "@mantine/hooks"
-import { DateInput } from "@mantine/dates"
 
 export const Events = () => {
-  const navigate = useNavigate()
-
   const { q } = useParams()
 
   const [search, setSearch] = useState(q ? q : "")
@@ -65,7 +62,7 @@ export const Events = () => {
             a.map.some((b) =>
               b.some(
                 (c) =>
-                  !c.taken &&
+                  !event.seatsTaken.includes(c.number) &&
                   c.type === "seat" &&
                   c.accessibilityRating >= wheelchair
               )
@@ -93,7 +90,7 @@ export const Events = () => {
         )
       })
 
-    if (count != events.length) setCount(events.length)
+    if (count !== events.length) setCount(events.length)
     return events
   }
 

@@ -2,10 +2,9 @@ import { get, set } from "../services/localObjectStorage"
 import { map3 } from "./Map"
 
 export type ButtonArrayButton = {
-  type: "seat" | "toilet" | "food"
+  type: "seat" | "toilet" | "food" | "empty"
   number: number
   accessibilityRating: number
-  taken?: boolean
 }
 
 type MapElement = {
@@ -54,22 +53,22 @@ export const locationMock: LocationMockType[] = [
         img: "", // Ground floor
         map: [
           [
-            { type: "seat", number: 1, accessibilityRating: 4, taken: true },
-            { type: "seat", number: 2, accessibilityRating: 4, taken: true },
-            { type: "seat", number: 3, accessibilityRating: 4, taken: true },
-            { type: "seat", number: 4, accessibilityRating: 4, taken: true },
+            { type: "seat", number: 1, accessibilityRating: 4 },
+            { type: "seat", number: 2, accessibilityRating: 4 },
+            { type: "seat", number: 3, accessibilityRating: 4 },
+            { type: "seat", number: 4, accessibilityRating: 4 },
             { type: "toilet", number: 5, accessibilityRating: 4 },
             { type: "seat", number: 6, accessibilityRating: 4 },
             { type: "seat", number: 7, accessibilityRating: 4 },
-            { type: "seat", number: 8, accessibilityRating: 4, taken: true },
-            { type: "seat", number: 9, accessibilityRating: 4, taken: true },
+            { type: "seat", number: 8, accessibilityRating: 4 },
+            { type: "seat", number: 9, accessibilityRating: 4 },
             { type: "food", number: 10, accessibilityRating: 4 },
           ],
           [
-            { type: "seat", number: 11, accessibilityRating: 3, taken: true },
-            { type: "seat", number: 12, accessibilityRating: 3, taken: true },
-            { type: "seat", number: 13, accessibilityRating: 3, taken: true },
-            { type: "seat", number: 14, accessibilityRating: 3, taken: true },
+            { type: "seat", number: 11, accessibilityRating: 3 },
+            { type: "seat", number: 12, accessibilityRating: 3 },
+            { type: "seat", number: 13, accessibilityRating: 3 },
+            { type: "seat", number: 14, accessibilityRating: 3 },
             { type: "toilet", number: 15, accessibilityRating: 3 },
             { type: "seat", number: 16, accessibilityRating: 3 },
             { type: "seat", number: 17, accessibilityRating: 3 },
@@ -83,28 +82,57 @@ export const locationMock: LocationMockType[] = [
         img: "", // First floor
         map: [
           [
-            { type: "seat", number: 21, accessibilityRating: 2, taken: true },
-            { type: "seat", number: 22, accessibilityRating: 2, taken: true },
-            { type: "seat", number: 23, accessibilityRating: 2, taken: true },
+            { type: "seat", number: 21, accessibilityRating: 2 },
+            { type: "seat", number: 22, accessibilityRating: 2 },
+            { type: "seat", number: 23, accessibilityRating: 2 },
             { type: "seat", number: 24, accessibilityRating: 2 },
             { type: "toilet", number: 25, accessibilityRating: 2 },
             { type: "seat", number: 26, accessibilityRating: 2 },
             { type: "seat", number: 27, accessibilityRating: 2 },
             { type: "food", number: 28, accessibilityRating: 2 },
-            { type: "seat", number: 29, accessibilityRating: 2, taken: true },
-            { type: "seat", number: 30, accessibilityRating: 2, taken: true },
+            { type: "seat", number: 29, accessibilityRating: 2 },
+            { type: "seat", number: 30, accessibilityRating: 2 },
           ],
           [
-            { type: "seat", number: 31, accessibilityRating: 2, taken: true },
-            { type: "seat", number: 32, accessibilityRating: 2, taken: true },
-            { type: "seat", number: 33, accessibilityRating: 0, taken: true },
-            { type: "seat", number: 34, accessibilityRating: 0, taken: true },
-            { type: "seat", number: 35, accessibilityRating: 0 },
+            { type: "seat", number: 31, accessibilityRating: 1 },
+            { type: "seat", number: 32, accessibilityRating: 1 },
+            { type: "seat", number: 33, accessibilityRating: 1 },
+            { type: "seat", number: 34, accessibilityRating: 1 },
+            { type: "toilet", number: 35, accessibilityRating: 2 },
             { type: "seat", number: 36, accessibilityRating: 0 },
             { type: "seat", number: 37, accessibilityRating: 0 },
-            { type: "seat", number: 38, accessibilityRating: 0 },
+            { type: "food", number: 38, accessibilityRating: 2 },
             { type: "seat", number: 39, accessibilityRating: 0 },
-            { type: "toilet", number: 40, accessibilityRating: 2 },
+            { type: "seat", number: 40, accessibilityRating: 0 },
+          ],
+        ],
+      },
+      {
+        img: "", // secret floor
+        map: [
+          [
+            { type: "seat", number: 41, accessibilityRating: 0 },
+            { type: "seat", number: 42, accessibilityRating: 0 },
+            { type: "empty", number: 0, accessibilityRating: 0 },
+            { type: "empty", number: 0, accessibilityRating: 0 },
+            { type: "empty", number: 0, accessibilityRating: 0 },
+            { type: "empty", number: 0, accessibilityRating: 0 },
+            { type: "empty", number: 0, accessibilityRating: 0 },
+            { type: "empty", number: 0, accessibilityRating: 0 },
+            { type: "seat", number: 43, accessibilityRating: 0 },
+            { type: "seat", number: 44, accessibilityRating: 0 },
+          ],
+          [
+            { type: "seat", number: 45, accessibilityRating: 0 },
+            { type: "seat", number: 46, accessibilityRating: 0 },
+            { type: "empty", number: 0, accessibilityRating: 0 },
+            { type: "empty", number: 0, accessibilityRating: 0 },
+            { type: "empty", number: 0, accessibilityRating: 0 },
+            { type: "empty", number: 0, accessibilityRating: 0 },
+            { type: "empty", number: 0, accessibilityRating: 0 },
+            { type: "empty", number: 0, accessibilityRating: 0 },
+            { type: "seat", number: 47, accessibilityRating: 0 },
+            { type: "seat", number: 48, accessibilityRating: 0 },
           ],
         ],
       },
@@ -132,10 +160,10 @@ export const locationMock: LocationMockType[] = [
         img: "", // Ground floor
         map: [
           [
-            { type: "seat", number: 1, accessibilityRating: 4, taken: true },
-            { type: "seat", number: 2, accessibilityRating: 4, taken: true },
-            { type: "seat", number: 3, accessibilityRating: 4, taken: true },
-            { type: "seat", number: 4, accessibilityRating: 4, taken: true },
+            { type: "seat", number: 1, accessibilityRating: 4 },
+            { type: "seat", number: 2, accessibilityRating: 4 },
+            { type: "seat", number: 3, accessibilityRating: 4 },
+            { type: "seat", number: 4, accessibilityRating: 4 },
             { type: "toilet", number: 5, accessibilityRating: 4 },
             { type: "seat", number: 6, accessibilityRating: 4 },
             { type: "seat", number: 7, accessibilityRating: 4 },
@@ -153,9 +181,9 @@ export const locationMock: LocationMockType[] = [
             { type: "seat", number: 12, accessibilityRating: 2 },
             { type: "seat", number: 13, accessibilityRating: 2 },
             { type: "seat", number: 14, accessibilityRating: 2 },
-            { type: "seat", number: 15, accessibilityRating: 2, taken: true },
-            { type: "food", number: 16, accessibilityRating: 2, taken: true },
-            { type: "seat", number: 17, accessibilityRating: 2, taken: true },
+            { type: "seat", number: 15, accessibilityRating: 2 },
+            { type: "food", number: 16, accessibilityRating: 2 },
+            { type: "seat", number: 17, accessibilityRating: 2 },
             { type: "seat", number: 18, accessibilityRating: 2 },
             { type: "seat", number: 19, accessibilityRating: 2 },
             { type: "toilet", number: 20, accessibilityRating: 2 },
@@ -194,15 +222,15 @@ export const locationMock: LocationMockType[] = [
         img: map3, // Ground level (outdoor)
         map: [
           [
-            { type: "seat", number: 1, accessibilityRating: 4, taken: true },
-            { type: "seat", number: 2, accessibilityRating: 4, taken: true },
-            { type: "seat", number: 3, accessibilityRating: 4, taken: true },
-            { type: "seat", number: 4, accessibilityRating: 4, taken: true },
+            { type: "seat", number: 1, accessibilityRating: 4 },
+            { type: "seat", number: 2, accessibilityRating: 4 },
+            { type: "seat", number: 3, accessibilityRating: 4 },
+            { type: "seat", number: 4, accessibilityRating: 4 },
             { type: "toilet", number: 5, accessibilityRating: 4 },
-            { type: "seat", number: 6, accessibilityRating: 0 },
-            { type: "seat", number: 7, accessibilityRating: 0 },
-            { type: "seat", number: 8, accessibilityRating: 0 },
-            { type: "seat", number: 9, accessibilityRating: 0 },
+            { type: "seat", number: 6, accessibilityRating: 4 },
+            { type: "seat", number: 7, accessibilityRating: 4 },
+            { type: "seat", number: 8, accessibilityRating: 4 },
+            { type: "seat", number: 9, accessibilityRating: 4 },
             { type: "food", number: 10, accessibilityRating: 4 },
           ],
         ],

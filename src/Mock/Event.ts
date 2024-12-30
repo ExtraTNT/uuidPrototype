@@ -8,6 +8,7 @@ export type EventMockType = {
   opening: Date
   price: number
   setlist: string
+  seatsTaken: number[]
 }
 
 const eventMock: EventMockType[] = [
@@ -19,6 +20,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-10T19:00:00"),
     start: new Date("2025-07-10T20:00:00"),
     price: 5000,
+    seatsTaken: [2],
   },
   {
     id: "2",
@@ -28,6 +30,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-11T19:00:00"),
     start: new Date("2025-07-11T20:00:00"),
     price: 5000,
+    seatsTaken: [],
   },
   {
     id: "3",
@@ -37,6 +40,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-12T19:00:00"),
     start: new Date("2025-07-12T20:00:00"),
     price: 5000,
+    seatsTaken: [1, 2, 3, 11, 12, 13, 36, 37, 39, 40],
   },
   {
     id: "4",
@@ -46,6 +50,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-13T19:00:00"),
     start: new Date("2025-07-13T20:00:00"),
     price: 5995,
+    seatsTaken: [],
   },
   {
     id: "5",
@@ -55,6 +60,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-14T19:00:00"),
     start: new Date("2025-07-14T20:00:00"),
     price: 6000,
+    seatsTaken: [],
   },
   {
     id: "6",
@@ -64,6 +70,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-15T19:00:00"),
     start: new Date("2025-07-15T20:00:00"),
     price: 5500,
+    seatsTaken: [],
   },
   {
     id: "7",
@@ -73,6 +80,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-11T19:00:00"),
     start: new Date("2025-07-11T20:00:00"),
     price: 2500,
+    seatsTaken: [],
   },
   {
     id: "8",
@@ -82,6 +90,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-12T19:00:00"),
     start: new Date("2025-07-12T20:00:00"),
     price: 3000,
+    seatsTaken: [],
   },
   {
     id: "9",
@@ -91,6 +100,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-13T19:00:00"),
     start: new Date("2025-07-13T20:00:00"),
     price: 1500,
+    seatsTaken: [],
   },
   {
     id: "10",
@@ -100,6 +110,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-14T19:00:00"),
     start: new Date("2025-07-14T20:00:00"),
     price: 1995,
+    seatsTaken: [],
   },
   {
     id: "11",
@@ -109,6 +120,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-15T19:00:00"),
     start: new Date("2025-07-15T20:00:00"),
     price: 600,
+    seatsTaken: [],
   },
   {
     id: "12",
@@ -118,6 +130,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-10T19:00:00"),
     start: new Date("2025-07-10T20:00:00"),
     price: 2500,
+    seatsTaken: [],
   },
 
   {
@@ -128,6 +141,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-12T19:00:00"),
     start: new Date("2025-07-12T20:00:00"),
     price: 2500,
+    seatsTaken: [],
   },
   {
     id: "14",
@@ -137,6 +151,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-13T19:00:00"),
     start: new Date("2025-07-13T20:00:00"),
     price: 3000,
+    seatsTaken: [],
   },
   {
     id: "15",
@@ -146,6 +161,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-14T19:00:00"),
     start: new Date("2025-07-14T20:00:00"),
     price: 1500,
+    seatsTaken: [],
   },
   {
     id: "16",
@@ -155,6 +171,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-15T19:00:00"),
     start: new Date("2025-07-15T20:00:00"),
     price: 1995,
+    seatsTaken: [],
   },
   {
     id: "17",
@@ -164,6 +181,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-10T19:00:00"),
     start: new Date("2025-07-10T20:00:00"),
     price: 600,
+    seatsTaken: [],
   },
   {
     id: "18",
@@ -173,6 +191,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-11T19:00:00"),
     start: new Date("2025-07-11T20:00:00"),
     price: 2500,
+    seatsTaken: [],
   },
 
   {
@@ -183,6 +202,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-10T19:00:00"),
     start: new Date("2025-08-10T20:00:00"),
     price: 5500,
+    seatsTaken: [],
   },
   {
     id: "20",
@@ -192,6 +212,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-11T19:00:00"),
     start: new Date("2025-08-11T20:00:00"),
     price: 4500,
+    seatsTaken: [],
   },
   {
     id: "21",
@@ -201,6 +222,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-12T19:00:00"),
     start: new Date("2025-08-12T20:00:00"),
     price: 5800,
+    seatsTaken: [],
   },
   {
     id: "22",
@@ -210,6 +232,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-13T19:00:00"),
     start: new Date("2025-08-13T20:00:00"),
     price: 6995,
+    seatsTaken: [],
   },
   {
     id: "23",
@@ -219,6 +242,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-14T19:00:00"),
     start: new Date("2025-08-14T20:00:00"),
     price: 10000,
+    seatsTaken: [],
   },
   {
     id: "24",
@@ -228,6 +252,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-15T19:00:00"),
     start: new Date("2025-08-15T20:00:00"),
     price: 5000,
+    seatsTaken: [],
   },
   {
     id: "25",
@@ -237,6 +262,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-11T19:00:00"),
     start: new Date("2025-08-11T20:00:00"),
     price: 4500,
+    seatsTaken: [],
   },
   {
     id: "26",
@@ -246,6 +272,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-12T19:00:00"),
     start: new Date("2025-08-12T20:00:00"),
     price: 3900,
+    seatsTaken: [],
   },
   {
     id: "27",
@@ -255,6 +282,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-13T19:00:00"),
     start: new Date("2025-08-13T20:00:00"),
     price: 7500,
+    seatsTaken: [],
   },
   {
     id: "28",
@@ -264,6 +292,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-14T19:00:00"),
     start: new Date("2025-08-14T20:00:00"),
     price: 3995,
+    seatsTaken: [],
   },
   {
     id: "29",
@@ -273,6 +302,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-15T19:00:00"),
     start: new Date("2025-08-15T20:00:00"),
     price: 5500,
+    seatsTaken: [],
   },
   {
     id: "30",
@@ -282,6 +312,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-10T19:00:00"),
     start: new Date("2025-08-10T20:00:00"),
     price: 4500,
+    seatsTaken: [],
   },
 
   {
@@ -292,6 +323,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-12T19:00:00"),
     start: new Date("2025-07-12T20:00:00"),
     price: 7500,
+    seatsTaken: [],
   },
   {
     id: "32",
@@ -301,6 +333,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-13T19:00:00"),
     start: new Date("2025-08-13T20:00:00"),
     price: 13000,
+    seatsTaken: [],
   },
   {
     id: "33",
@@ -310,6 +343,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-14T19:00:00"),
     start: new Date("2025-08-14T20:00:00"),
     price: 5500,
+    seatsTaken: [],
   },
   {
     id: "34",
@@ -319,6 +353,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-15T19:00:00"),
     start: new Date("2025-08-15T20:00:00"),
     price: 1950,
+    seatsTaken: [],
   },
   {
     id: "35",
@@ -328,6 +363,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-10T19:00:00"),
     start: new Date("2025-08-10T20:00:00"),
     price: 1500,
+    seatsTaken: [],
   },
   {
     id: "36",
@@ -337,6 +373,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-08-11T19:00:00"),
     start: new Date("2025-08-11T20:00:00"),
     price: 2500,
+    seatsTaken: [],
   },
 ]
 
