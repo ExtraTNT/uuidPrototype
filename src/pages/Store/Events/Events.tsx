@@ -1,5 +1,15 @@
-import { Box, FocusTrap, Center, Input, SimpleGrid } from "@mantine/core"
-import { IconSearch } from "@tabler/icons-react"
+import {
+  Box,
+  FocusTrap,
+  Center,
+  Input,
+  SimpleGrid,
+  Text,
+  Collapse,
+  Checkbox,
+  Flex,
+} from "@mantine/core"
+import { IconFilter, IconMeat, IconSearch } from "@tabler/icons-react"
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getBandMock } from "../../../Mock/Band"
@@ -9,6 +19,8 @@ import { getSetlistMock } from "../../../Mock/SetList"
 import StoreItem from "../../../components/StoreItem"
 import { getLoggedInContextMock } from "../../../Mock/LoggedInContextMock"
 import { getAccountMock } from "../../../Mock/Account"
+import { useDisclosure } from "@mantine/hooks"
+import { DateInput } from "@mantine/dates"
 
 export const Events = () => {
   const navigate = useNavigate()
@@ -16,6 +28,10 @@ export const Events = () => {
   const { q } = useParams()
 
   const [search, setSearch] = useState(q ? q : "")
+  const [opened, { toggle }] = useDisclosure(false)
+  const [count, setCount] = useState(0)
+
+  const [showAll, setShowAll] = useState(false)
 
   const searchEvents = (search: string) => {
     const searchLower = search.trim().toLowerCase()
@@ -28,11 +44,16 @@ export const Events = () => {
       getSetlistMock().map((setlist) => [setlist.id, setlist])
     )
 
-    return getEventMock()
+    const wheelchair = getAccountMock().wheelchair
+
+    const loggedIn = getLoggedInContextMock().loggedIn
+
+    const events = getEventMock()
       .filter((event) => new Date(event.opening) > new Date()) // Future events only
       .filter(
         (event) =>
-          !getLoggedInContextMock().loggedIn ||
+          !loggedIn ||
+          showAll ||
           locations
             .get(event.location)
             ?.map.some((a) =>
@@ -41,7 +62,7 @@ export const Events = () => {
                   (c) =>
                     !c.taken &&
                     c.type === "seat" &&
-                    c.accessibilityRating >= getAccountMock().wheelchair
+                    c.accessibilityRating >= wheelchair
                 )
               )
             )
@@ -65,6 +86,9 @@ export const Events = () => {
               )))
         )
       })
+
+    if (count != events.length) setCount(events.length)
+    return events
   }
 
   return (
@@ -73,13 +97,38 @@ export const Events = () => {
         <Center p="xl">
           <Input
             w="50%"
+            style={{ zIndex: 9 }}
             size="xl"
             radius="xl"
             placeholder="Search - Band, Song, Location, Tour"
             value={search}
             onChange={(event) => setSearch(event.currentTarget.value)}
+            rightSectionPointerEvents="all"
             leftSection={<IconSearch size={16} />}
+            rightSection={
+              getLoggedInContextMock().loggedIn ? (
+                <IconFilter
+                  style={{ cursor: "pointer" }}
+                  size={24}
+                  onClick={() => toggle()}
+                />
+              ) : (
+                <></>
+              )
+            }
           />
+          <Text p="md">{count} Events found for you</Text>
+        </Center>
+        <Center>
+          <Collapse in={opened} p="md">
+            <Flex direction="row" gap="md">
+              <Checkbox
+                checked={showAll}
+                onChange={(e) => setShowAll(!showAll)}
+                label="Show events not accessible to me"
+              />
+            </Flex>
+          </Collapse>
         </Center>
       </FocusTrap>
       <SimpleGrid type="container" cols={{ base: 1, "800px": 2, "1300px": 3 }}>

@@ -5,7 +5,6 @@ import {
   Burger,
   Flex,
   Group,
-  Text,
   Title,
 } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
@@ -19,12 +18,12 @@ export const App = () => {
   return (
     <AppShell
       header={{ height: 60 }}
+      h="100vh"
       navbar={{
         width: 400,
         breakpoint: "sm",
         collapsed: { mobile: !opened, desktop: !opened },
       }}
-      padding="md"
     >
       <AppShell.Header>
         <Group grow justify="space-between" h="100%">
@@ -49,7 +48,7 @@ export const App = () => {
       <AppShell.Navbar p="md">
         <NavList />
       </AppShell.Navbar>
-      <AppShell.Main>
+      <AppShell.Main h="100%">
         <CustomRouter />
       </AppShell.Main>
       <AppShellFooter></AppShellFooter>

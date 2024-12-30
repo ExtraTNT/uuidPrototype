@@ -1,19 +1,17 @@
 import {
   Button,
-  Flex,
   Group,
   Image,
-  Rating,
   Stack,
   Text,
   Title,
   Tooltip,
   useComputedColorScheme,
 } from "@mantine/core"
-import { useHover } from "@mantine/hooks"
 import { useNavigate } from "react-router-dom"
 import { getAccountMock } from "../Mock/Account"
 import { getLoggedInContextMock } from "../Mock/LoggedInContextMock"
+import { memo } from "react"
 
 type ExerciseCardProps = {
   title: string
@@ -28,7 +26,7 @@ type ExerciseCardProps = {
   children?: React.ReactNode
 }
 
-export default function StoreItem({
+export default memo(function StoreItem({
   title,
   id,
   tour,
@@ -43,7 +41,10 @@ export default function StoreItem({
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
   })
+
   const navigate = useNavigate()
+  const ticketIncluded = getAccountMock().tickets.includes(id)
+  const loggedIn = getLoggedInContextMock().loggedIn
 
   return (
     <Stack
@@ -67,19 +68,11 @@ export default function StoreItem({
             <Tooltip
               openDelay={500}
               label={"You already bought this ticket"}
-              disabled={
-                !(
-                  getLoggedInContextMock().loggedIn &&
-                  getAccountMock().tickets.includes(id)
-                )
-              }
+              disabled={!(loggedIn && ticketIncluded)}
             >
               <Button
                 onClick={() => navigate("/store/events/" + id)}
-                disabled={
-                  getLoggedInContextMock().loggedIn &&
-                  getAccountMock().tickets.includes(id)
-                }
+                disabled={loggedIn && ticketIncluded}
               >
                 Buy {(price / 100).toFixed()}.
                 {price % 100 == 0 ? "-" : price % 100}
@@ -90,4 +83,4 @@ export default function StoreItem({
       </Group>
     </Stack>
   )
-}
+})
