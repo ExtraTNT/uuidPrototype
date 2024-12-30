@@ -45,6 +45,7 @@ export const Home = () => {
           <Title
             style={{
               fontSize: "8vw",
+              opacity: "80%",
               textShadow:
                 computedColorScheme === "dark"
                   ? "-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000"

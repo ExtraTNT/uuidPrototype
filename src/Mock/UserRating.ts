@@ -96,7 +96,8 @@ const userRatingMock: UserRatingMockType[] = [
     id: "15",
     account: "1",
     rating: 4,
-    detail: "The venue provided sign language interpreters.",
+    detail:
+      "The venue provided competent staff. Got my wheelchair back after I lost it while crowd surfing.",
   },
   {
     id: "16",

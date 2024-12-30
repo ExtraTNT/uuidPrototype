@@ -6,6 +6,7 @@ import {
   Flex,
   Group,
   Title,
+  Tooltip,
 } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import { ColorToggler } from "./components/ColorToggler"
@@ -27,7 +28,13 @@ export const App = () => {
     >
       <AppShell.Header>
         <Group grow justify="space-between" h="100%">
-          <Burger p="md" opened={opened} onClick={toggle} />
+          <Tooltip
+            label={(opened ? "Close" : "Open") + " navigation sidebar"}
+            openDelay={250}
+            offset={{ crossAxis: -250 }}
+          >
+            <Burger p="md" opened={opened} onClick={toggle} />
+          </Tooltip>
           <Flex
             justify="center"
             align="center"
@@ -45,9 +52,7 @@ export const App = () => {
           </Flex>
         </Group>
       </AppShell.Header>
-      <AppShell.Navbar p="md">
-        <NavList />
-      </AppShell.Navbar>
+      <AppShell.Navbar p="md">{opened && <NavList />}</AppShell.Navbar>
       <AppShell.Main h="100%">
         <CustomRouter />
       </AppShell.Main>

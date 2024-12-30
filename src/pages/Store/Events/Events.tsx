@@ -8,6 +8,7 @@ import {
   Collapse,
   Checkbox,
   Flex,
+  Tooltip,
 } from "@mantine/core"
 import { IconFilter, IconMeat, IconSearch } from "@tabler/icons-react"
 import { useState } from "react"
@@ -32,6 +33,7 @@ export const Events = () => {
   const [count, setCount] = useState(0)
 
   const [showAll, setShowAll] = useState(false)
+  const [ignoringStanding, setIgnoringStanding] = useState(true)
 
   const searchEvents = (search: string) => {
     const searchLower = search.trim().toLowerCase()
@@ -50,23 +52,27 @@ export const Events = () => {
 
     const events = getEventMock()
       .filter((event) => new Date(event.opening) > new Date()) // Future events only
-      .filter(
-        (event) =>
+      .filter((event) => {
+        const location = locations.get(event.location)
+        console.log(location)
+        return (
           !loggedIn ||
           showAll ||
-          locations
-            .get(event.location)
-            ?.map.some((a) =>
-              a.map.some((b) =>
-                b.some(
-                  (c) =>
-                    !c.taken &&
-                    c.type === "seat" &&
-                    c.accessibilityRating >= wheelchair
-                )
+          (location &&
+            location.standignAccessibility >= wheelchair &&
+            !ignoringStanding) ||
+          location?.map.some((a) =>
+            a.map.some((b) =>
+              b.some(
+                (c) =>
+                  !c.taken &&
+                  c.type === "seat" &&
+                  c.accessibilityRating >= wheelchair
               )
             )
-      )
+          )
+        )
+      })
       .filter((event) => {
         const band = bands.get(event.band)
         const location = locations.get(event.location)
@@ -107,71 +113,50 @@ export const Events = () => {
             leftSection={<IconSearch size={16} />}
             rightSection={
               getLoggedInContextMock().loggedIn ? (
-                <IconFilter
-                  style={{ cursor: "pointer" }}
-                  size={24}
-                  onClick={() => toggle()}
-                />
+                <Tooltip label="Show additional filters" openDelay={250}>
+                  <IconFilter
+                    style={{ cursor: "pointer" }}
+                    size={24}
+                    onClick={() => toggle()}
+                  />
+                </Tooltip>
               ) : (
                 <></>
               )
             }
           />
-          <Text p="md">{count} Events found for you</Text>
         </Center>
         <Center>
-          <Collapse in={opened} p="md">
-            <Flex direction="row" gap="md">
-              <Checkbox
-                checked={showAll}
-                onChange={(e) => setShowAll(!showAll)}
-                label="Show events not accessible to me"
-              />
+          <Collapse in={opened}>
+            <Flex direction="row" gap="md" pb="md">
+              <Tooltip
+                label="Check, if you want to seach for events, that don't fulfill your reported accessibility needs"
+                openDelay={250}
+              >
+                <Checkbox
+                  checked={showAll}
+                  onChange={(e) => setShowAll(!showAll)}
+                  label="Show events not accessible to me"
+                />
+              </Tooltip>
+              <Tooltip
+                label="Uncheck, if you are disabled, but still want to search for events with standind places"
+                openDelay={250}
+              >
+                <Checkbox
+                  checked={ignoringStanding}
+                  onChange={(e) => setIgnoringStanding(!ignoringStanding)}
+                  label="Ignore accessibility of standing places"
+                />
+              </Tooltip>
             </Flex>
           </Collapse>
         </Center>
       </FocusTrap>
+      <Center>
+        <Text pb="md">{count} Events found for you</Text>
+      </Center>
       <SimpleGrid type="container" cols={{ base: 1, "800px": 2, "1300px": 3 }}>
-        {/*
-        {getEventMock()
-          .filter((e) => new Date(e.opening) > new Date())
-          .filter(
-            (i) =>
-              getBandMock()
-                .filter((j) => j.id === i.band)[0]
-                .name.trim()
-                .toLowerCase()
-                .includes(search.trim().toLocaleLowerCase()) ||
-              getBandMock()
-                .filter((j) => j.id === i.band)[0]
-                .genre.trim()
-                .toLowerCase()
-                .includes(search.trim().toLocaleLowerCase()) ||
-              getLocationMock()
-                .filter((j) => j.id === i.location)[0]
-                .name.trim()
-                .toLowerCase()
-                .includes(search.trim().toLocaleLowerCase()) ||
-              getLocationMock()
-                .filter((j) => j.id === i.location)[0]
-                .city.trim()
-                .toLowerCase()
-                .includes(search.trim().toLowerCase()) ||
-              getSetlistMock()
-                .filter((j) => j.id === i.setlist)[0]
-                .name.trim()
-                .toLowerCase()
-                .includes(search.trim().toLowerCase()) ||
-              getSetlistMock()
-                .filter((j) => j.id === i.setlist)[0]
-                .setlist.find((k) =>
-                  k.song
-                    .trim()
-                    .toLowerCase()
-                    .includes(search.trim().toLowerCase())
-                ) !== undefined
-          )
-                */}
         {searchEvents(search).map((v) => (
           <StoreItem
             title={getBandMock().filter((b) => b.id === v.band)[0].name}

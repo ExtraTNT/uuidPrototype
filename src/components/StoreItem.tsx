@@ -49,6 +49,7 @@ export default memo(function StoreItem({
   return (
     <Stack
       bg={computedColorScheme === "dark" ? "dark" : "blue.2"}
+      justify="space-between"
       style={{ borderRadius: "8px", cursor: "pointer" }}
       p="lg"
       gap="md"
@@ -71,11 +72,14 @@ export default memo(function StoreItem({
               disabled={!(loggedIn && ticketIncluded)}
             >
               <Button
-                onClick={() => navigate("/store/events/" + id)}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  navigate("/store/events/" + id)
+                }}
                 disabled={loggedIn && ticketIncluded}
               >
                 Buy {(price / 100).toFixed()}.
-                {price % 100 == 0 ? "-" : price % 100}
+                {price % 100 === 0 ? "-" : price % 100}
               </Button>
             </Tooltip>
           </Stack>
