@@ -1,9 +1,8 @@
 import { Center, Stack, TextInput, PasswordInput, Button } from "@mantine/core"
-import { getAccountMock, AccountMockType } from "../../Mock/Account"
+import { getAccountMock } from "../../Mock/Account"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
-import { IconDeviceFloppy, IconLogin } from "@tabler/icons-react"
-import { getBase64 } from "../../utils/base64"
+import { IconLogin, IconPencil } from "@tabler/icons-react"
 import { notifications } from "@mantine/notifications"
 import { checkIcon, xIcon } from "../../components/NotificationIcons"
 import { set } from "../../services/localObjectStorage"
@@ -20,7 +19,7 @@ export const Login = () => {
   }
   const login = () => {
     const account = getAccountMock()
-    if (account.email === email && account.password == passwd) {
+    if (account.email === email && account.password === passwd) {
       set("loggedInContext", { loggedIn: true })
       navigate("/")
       notifications.show({
@@ -68,7 +67,7 @@ export const Login = () => {
             w="100%"
             variant="outline"
             onClick={login}
-            leftSection={<IconDeviceFloppy size={14} />}
+            leftSection={<IconLogin size={14} />}
           >
             Login
           </Button>
@@ -76,7 +75,7 @@ export const Login = () => {
             w="100%"
             variant="outline"
             onClick={register}
-            leftSection={<IconLogin size={14} />}
+            leftSection={<IconPencil size={14} />}
           >
             Register Instead
           </Button>

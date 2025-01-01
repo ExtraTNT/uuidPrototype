@@ -19,12 +19,7 @@ import { getAccountMock, AccountMockType } from "../../Mock/Account"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { helpText } from "../../utils/wheelchairMap"
-import {
-  IconCamera,
-  IconDeviceFloppy,
-  IconLogin,
-  IconX,
-} from "@tabler/icons-react"
+import { IconCamera, IconLogin, IconPencil, IconX } from "@tabler/icons-react"
 import { getBase64 } from "../../utils/base64"
 import { notifications } from "@mantine/notifications"
 import { checkIcon, xIcon } from "../../components/NotificationIcons"
@@ -259,7 +254,7 @@ export const Register = () => {
             <Button
               variant="outline"
               onClick={saveAccount}
-              leftSection={<IconDeviceFloppy size={14} />}
+              leftSection={<IconPencil size={14} />}
             >
               Register
             </Button>

@@ -5,7 +5,6 @@ import { getLoggedInContextMock } from "../Mock/LoggedInContextMock"
 import { clear } from "../services/localObjectStorage"
 
 export const NavList = () => {
-  console.log(getLoggedInContextMock())
   return (
     <ScrollArea h="100%">
       <Stack>
