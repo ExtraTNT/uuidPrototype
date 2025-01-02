@@ -1,5 +1,5 @@
 import { get, set } from "../services/localObjectStorage"
-import { map3 } from "./Map"
+import { map11, map12, map13, map21, map22, map3, placeholder } from "./Map"
 
 export type ButtonArrayButton = {
   type: "seat" | "toilet" | "food" | "empty"
@@ -46,11 +46,17 @@ export const locationMock: LocationMockType[] = [
     city: "Bern",
     country: "CH",
     address: "Mayhem 1",
-    img: [],
-    streetMap: "",
+    img: [
+      "https://i0.wp.com/mentalmars.com/wp-content/uploads/2019/04/Arena-fight-Borderlands-3.jpg?ssl=1",
+      "https://www.countryandtownhouse.co.uk/wp-content/uploads/2019/04/bar.jpg",
+      "https://www.shieldhealthcare.com/community/wp-content/uploads/2019/01/Disabled-Parking-is-a-Game-Changer-for-Parents-of-Kids-with-Special-Needs.jpg",
+      placeholder,
+    ],
+    streetMap:
+      "https://i.pinimg.com/originals/22/a3/50/22a3506a908ef263dd918325519c2b2a.jpg",
     map: [
       {
-        img: "", // Ground floor
+        img: map11, // Ground floor
         map: [
           [
             { type: "seat", number: 1, accessibilityRating: 4 },
@@ -79,7 +85,7 @@ export const locationMock: LocationMockType[] = [
         ],
       },
       {
-        img: "", // First floor
+        img: map12, // First floor
         map: [
           [
             { type: "seat", number: 21, accessibilityRating: 2 },
@@ -87,8 +93,8 @@ export const locationMock: LocationMockType[] = [
             { type: "seat", number: 23, accessibilityRating: 2 },
             { type: "seat", number: 24, accessibilityRating: 2 },
             { type: "toilet", number: 25, accessibilityRating: 2 },
-            { type: "seat", number: 26, accessibilityRating: 2 },
-            { type: "seat", number: 27, accessibilityRating: 2 },
+            { type: "toilet", number: 26, accessibilityRating: 2 },
+            { type: "food", number: 27, accessibilityRating: 2 },
             { type: "food", number: 28, accessibilityRating: 2 },
             { type: "seat", number: 29, accessibilityRating: 2 },
             { type: "seat", number: 30, accessibilityRating: 2 },
@@ -98,17 +104,17 @@ export const locationMock: LocationMockType[] = [
             { type: "seat", number: 32, accessibilityRating: 1 },
             { type: "seat", number: 33, accessibilityRating: 1 },
             { type: "seat", number: 34, accessibilityRating: 1 },
-            { type: "toilet", number: 35, accessibilityRating: 2 },
+            { type: "seat", number: 35, accessibilityRating: 1 },
             { type: "seat", number: 36, accessibilityRating: 0 },
             { type: "seat", number: 37, accessibilityRating: 0 },
-            { type: "food", number: 38, accessibilityRating: 2 },
+            { type: "seat", number: 38, accessibilityRating: 0 },
             { type: "seat", number: 39, accessibilityRating: 0 },
             { type: "seat", number: 40, accessibilityRating: 0 },
           ],
         ],
       },
       {
-        img: "", // secret floor
+        img: map13, // secret floor
         map: [
           [
             { type: "seat", number: 41, accessibilityRating: 0 },
@@ -153,40 +159,45 @@ export const locationMock: LocationMockType[] = [
     city: "Zürich",
     country: "CH",
     address: "Industriestrasse 64",
-    img: [],
-    streetMap: "",
+    img: [
+      "https://nmeda.org/wp-content/uploads/2016/10/Accessible-Parking-Spots.jpg",
+      "https://www.101mobility.com/wp-content/uploads/2014/02/ADA-Compliant-Ramp.jpg",
+      placeholder,
+    ],
+    streetMap:
+      "https://cdna.artstation.com/p/assets/images/images/003/029/830/large/philip-rice-map-of-asgard-jotunheim-nidavellir-vanaheim.jpg?1468721447",
     map: [
       {
-        img: "", // Ground floor
+        img: map21, // Ground floor
         map: [
           [
-            { type: "seat", number: 1, accessibilityRating: 4 },
+            { type: "toilet", number: 1, accessibilityRating: 4 },
             { type: "seat", number: 2, accessibilityRating: 4 },
             { type: "seat", number: 3, accessibilityRating: 4 },
             { type: "seat", number: 4, accessibilityRating: 4 },
-            { type: "toilet", number: 5, accessibilityRating: 4 },
+            { type: "food", number: 5, accessibilityRating: 4 },
             { type: "seat", number: 6, accessibilityRating: 4 },
             { type: "seat", number: 7, accessibilityRating: 4 },
             { type: "seat", number: 8, accessibilityRating: 4 },
             { type: "seat", number: 9, accessibilityRating: 4 },
-            { type: "food", number: 10, accessibilityRating: 4 },
+            { type: "seat", number: 10, accessibilityRating: 4 },
           ],
         ],
       },
       {
-        img: "", // First floor
+        img: map22, // First floor
         map: [
           [
-            { type: "seat", number: 11, accessibilityRating: 2 },
+            { type: "food", number: 11, accessibilityRating: 2 },
             { type: "seat", number: 12, accessibilityRating: 2 },
             { type: "seat", number: 13, accessibilityRating: 2 },
             { type: "seat", number: 14, accessibilityRating: 2 },
             { type: "seat", number: 15, accessibilityRating: 2 },
-            { type: "food", number: 16, accessibilityRating: 2 },
+            { type: "toilet", number: 16, accessibilityRating: 2 },
             { type: "seat", number: 17, accessibilityRating: 2 },
             { type: "seat", number: 18, accessibilityRating: 2 },
             { type: "seat", number: 19, accessibilityRating: 2 },
-            { type: "toilet", number: 20, accessibilityRating: 2 },
+            { type: "seat", number: 20, accessibilityRating: 2 },
           ],
         ],
       },

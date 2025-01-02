@@ -132,6 +132,8 @@ export const EventDetail = () => {
     if (!getLoggedInContextMock().loggedIn)
       return "Seat free - log in to see additional accessibility information"
     const accessibility = getAccountMock().wheelchair
+    if (accessibility <= 1 && accessibility >= 3)
+      return "Seat for wheelchair users only"
     if (
       (accessibility === 1 && accessibilityRating === 1) ||
       (accessibility === 2 && accessibilityRating === 2)
@@ -146,6 +148,7 @@ export const EventDetail = () => {
   function getColor(accessibilityRating: number): string {
     if (!getLoggedInContextMock().loggedIn) return "green"
     const accessibility = getAccountMock().wheelchair
+    if (accessibility <= 1 && accessibilityRating >= 3) return "orange"
     if (accessibility === 1 && accessibilityRating === 1) return "orange"
     if (accessibility === 2 && accessibilityRating === 2) return "orange"
 
@@ -296,174 +299,192 @@ export const EventDetail = () => {
                 <Title w="100%" ta="center">
                   Select your seat(s)
                 </Title>
-
-                {(selectedSeats.length >= 1 || standingTickets >= 1) && (
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      if (
-                        getLoggedInContextMock().loggedIn &&
-                        !(
-                          location.map.some((m) =>
-                            m.map.some((m) =>
-                              m.some(
-                                (m) =>
-                                  selectedSeats.includes(m.number) &&
-                                  m.accessibilityRating >=
-                                    getAccountMock().wheelchair
-                              )
-                            )
-                          ) ||
-                          (standingTickets >= 0 &&
-                            location.standignAccessibility >=
-                              getAccountMock().wheelchair)
+                <Group align="flex-end">
+                  {location.standingPlaces && (
+                    <NumberInput
+                      label="Standing tickets"
+                      placeholder="Standing tickets"
+                      suffix=" Tickets"
+                      value={standingTickets}
+                      clampBehavior="strict"
+                      onChange={(e) =>
+                        setStandingTickets(
+                          typeof e === "number" ? e : Number.parseInt(e)
                         )
-                      )
-                        notifications.show({
-                          title: "No accessible seat selected",
-                          message:
-                            "You haven't selected any seat you can access based on your profile. For the best expirience it is recommended to get a seat you can access",
-                          icon: warnIcon,
-                          color: "orange",
-                          position: "top-center",
-                        })
-                      handleStepChange(active + 1)
-                    }}
-                  >
-                    Next
-                  </Button>
-                )}
-                <NumberInput
-                  label="Standing tickets"
-                  placeholder="Standing tickets"
-                  suffix=" Tickets"
-                  value={standingTickets}
-                  clampBehavior="strict"
-                  onChange={(e) =>
-                    setStandingTickets(
-                      typeof e === "number" ? e : Number.parseInt(e)
-                    )
-                  }
-                  allowNegative={false}
-                  min={0}
-                  max={10}
-                  mt="md"
-                />
-
-                {[...location.map].reverse().map((v, i) => (
-                  <Box key={i + "box"}>
-                    <Title
-                      key={i + "slvl"}
-                      order={2}
-                      p="md"
-                      w="100%"
-                      ta="center"
-                    >
-                      Floor {location.map.length - i}
-                    </Title>
-                    {v.map.map((v, i) => (
-                      <Group gap="xs" p="xs" key={"floorgroup" + i}>
-                        {v.map((v, i) => (
-                          <Box
-                            key={v.number + v.type + i}
-                            w={28}
-                            p="2"
-                            onClick={() => {
-                              if (
-                                v.type !== "seat" ||
-                                event.seatsTaken.includes(v.number)
-                              )
-                                return
-                              if (selectedSeats.includes(v.number)) {
-                                setSelectedSeats(
-                                  selectedSeats.filter((n) => n !== v.number)
-                                )
-                              } else {
-                                setSelectedSeats([v.number, ...selectedSeats])
-                              }
-                            }}
-                            bg={
-                              selectedSeats.includes(v.number)
-                                ? "cyan"
-                                : computedColorScheme === "dark"
-                                ? "dark"
-                                : "blue.2"
-                            }
-                            style={{
-                              borderRadius: "4pt",
-                              cursor:
-                                event.seatsTaken.includes(v.number) ||
-                                v.type !== "seat"
-                                  ? "default"
-                                  : "pointer",
-                            }}
-                          >
-                            {v.type === "seat" && (
-                              <Tooltip
-                                label={getSeatBuyTooltip(
-                                  v.accessibilityRating,
-                                  event.seatsTaken.includes(v.number),
-                                  myPlaces.includes(v.number),
-                                  selectedSeats.includes(v.number)
-                                )}
-                                openDelay={250}
-                              >
-                                <IconArmchair2
-                                  size={24}
-                                  color={
-                                    myPlaces.includes(v.number)
-                                      ? "cyan"
-                                      : event.seatsTaken.includes(v.number)
-                                      ? "gray"
-                                      : getColor(v.accessibilityRating)
-                                  }
-                                />
-                              </Tooltip>
-                            )}
-                            {v.type === "food" && (
-                              <Tooltip
-                                label={getFoodToiletTooltip(
-                                  v.accessibilityRating,
-                                  "Food"
-                                )}
-                                openDelay={250}
-                              >
-                                <IconToolsKitchen2 size={24} color="purple" />
-                              </Tooltip>
-                            )}
-                            {v.type === "toilet" && (
-                              <Tooltip
-                                label={getFoodToiletTooltip(
-                                  v.accessibilityRating,
-                                  "Toilet"
-                                )}
-                                openDelay={250}
-                              >
-                                <IconToiletPaper size={24} color="blue" />
-                              </Tooltip>
-                            )}
-                            {v.type === "empty" && <IconX size={24} />}
-                            <Text w="100%" ta="center">
-                              {v.number === 0 ? "-" : v.number}
-                            </Text>
-                          </Box>
-                        ))}
-                      </Group>
-                    ))}
-                    <Box
-                      key={i + "stage"}
-                      w="100%"
-                      bg={
-                        computedColorScheme === "dark" ? "green.9" : "green.2"
                       }
-                      style={{ borderRadius: "4pt" }}
+                      allowNegative={false}
+                      min={0}
+                      max={10}
+                      mt="md"
+                    />
+                  )}
+                  {(selectedSeats.length >= 1 || standingTickets >= 1) && (
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        if (
+                          getLoggedInContextMock().loggedIn &&
+                          !(
+                            location.map.some((m) =>
+                              m.map.some((m) =>
+                                m.some(
+                                  (m) =>
+                                    selectedSeats.includes(m.number) &&
+                                    m.accessibilityRating >=
+                                      getAccountMock().wheelchair
+                                )
+                              )
+                            ) ||
+                            (standingTickets >= 0 &&
+                              location.standignAccessibility >=
+                                getAccountMock().wheelchair)
+                          )
+                        )
+                          notifications.show({
+                            title: "No accessible seat selected",
+                            message:
+                              "You haven't selected any seat you can access based on your profile. For the best expirience it is recommended to get a seat you can access",
+                            icon: warnIcon,
+                            color: "orange",
+                            position: "top-center",
+                          })
+                        handleStepChange(active + 1)
+                      }}
                     >
-                      <Text w="100%" ta="center">
-                        Stage
-                      </Text>
-                    </Box>
-                  </Box>
-                ))}
+                      Next
+                    </Button>
+                  )}
+                </Group>
+              </Stack>
+              <Stack justify="center" align="stretch" w="100%">
+                <SimpleGrid
+                  cols={{
+                    base: 1,
+                    "1200px":
+                      location.map.length >= 2 ? 2 : location.map.length,
+                    "1800px":
+                      location.map.length >= 3 ? 3 : location.map.length,
+                  }}
+                  p="md"
+                  w="auto"
+                  type="container"
+                >
+                  {[...location.map].reverse().map((v, i) => (
+                    <Stack key={i + "box"} align="center">
+                      <Title
+                        key={i + "slvl"}
+                        order={2}
+                        p="md"
+                        w="100%"
+                        ta="center"
+                      >
+                        Floor {location.map.length - i}
+                      </Title>
+                      {v.map.map((v, i) => (
+                        <Group gap="xs" p="xs" key={"floorgroup" + i}>
+                          {v.map((v, i) => (
+                            <Box
+                              key={v.number + v.type + i}
+                              w={28}
+                              p="2"
+                              onClick={() => {
+                                if (
+                                  v.type !== "seat" ||
+                                  event.seatsTaken.includes(v.number)
+                                )
+                                  return
+                                if (selectedSeats.includes(v.number)) {
+                                  setSelectedSeats(
+                                    selectedSeats.filter((n) => n !== v.number)
+                                  )
+                                } else {
+                                  setSelectedSeats([v.number, ...selectedSeats])
+                                }
+                              }}
+                              bg={
+                                selectedSeats.includes(v.number)
+                                  ? "cyan"
+                                  : computedColorScheme === "dark"
+                                  ? "dark"
+                                  : "blue.2"
+                              }
+                              style={{
+                                borderRadius: "4pt",
+                                cursor:
+                                  event.seatsTaken.includes(v.number) ||
+                                  v.type !== "seat"
+                                    ? "default"
+                                    : "pointer",
+                              }}
+                            >
+                              {v.type === "seat" && (
+                                <Tooltip
+                                  label={getSeatBuyTooltip(
+                                    v.accessibilityRating,
+                                    event.seatsTaken.includes(v.number),
+                                    myPlaces.includes(v.number),
+                                    selectedSeats.includes(v.number)
+                                  )}
+                                  openDelay={250}
+                                >
+                                  <IconArmchair2
+                                    size={24}
+                                    color={
+                                      myPlaces.includes(v.number)
+                                        ? "cyan"
+                                        : event.seatsTaken.includes(v.number)
+                                        ? "gray"
+                                        : getColor(v.accessibilityRating)
+                                    }
+                                  />
+                                </Tooltip>
+                              )}
+                              {v.type === "food" && (
+                                <Tooltip
+                                  label={getFoodToiletTooltip(
+                                    v.accessibilityRating,
+                                    "Food"
+                                  )}
+                                  openDelay={250}
+                                >
+                                  <IconToolsKitchen2 size={24} color="purple" />
+                                </Tooltip>
+                              )}
+                              {v.type === "toilet" && (
+                                <Tooltip
+                                  label={getFoodToiletTooltip(
+                                    v.accessibilityRating,
+                                    "Toilet"
+                                  )}
+                                  openDelay={250}
+                                >
+                                  <IconToiletPaper size={24} color="blue" />
+                                </Tooltip>
+                              )}
+                              {v.type === "empty" && <IconX size={24} />}
+                              <Text w="100%" ta="center">
+                                {v.number === 0 ? "-" : v.number}
+                              </Text>
+                            </Box>
+                          ))}
+                        </Group>
+                      ))}
+                      <Box
+                        key={i + "stage"}
+                        w="100%"
+                        maw={300}
+                        bg={
+                          computedColorScheme === "dark" ? "green.9" : "green.2"
+                        }
+                        style={{ borderRadius: "4pt" }}
+                      >
+                        <Text w="100%" ta="center">
+                          Stage
+                        </Text>
+                      </Box>
+                    </Stack>
+                  ))}
+                </SimpleGrid>
               </Stack>
             </Stepper.Step>
             <Stepper.Step
@@ -717,13 +738,15 @@ export const EventDetail = () => {
           <Stack justify="flex-start" align="center" gap="md" p="md">
             <Title>{location.name} - Map</Title>
             <Title order={2}>Street Map</Title>
-            <Image
-              src={location.streetMap}
-              maw="90vw"
-              w="auto"
-              h="auto"
-              mah="70vh"
-            />
+            <Tooltip label="Imagine this being google maps" openDelay={100}>
+              <Image
+                src={location.streetMap}
+                maw="90vw"
+                w="auto"
+                h="auto"
+                mah="70vh"
+              />
+            </Tooltip>
             {location.map.map((v, i) => (
               <>
                 <Title key={i + "tlvl"} order={2}>
@@ -745,85 +768,104 @@ export const EventDetail = () => {
         <Tabs.Panel value="seats">
           <Stack justify="flex-start" align="center" p="md">
             <Title p="md">{location.name} - Seat Arangement</Title>
-            {[...location.map].reverse().map((v, i) => (
-              <Box key={i + "floor"}>
-                <Title key={i + "slvl"} order={2} p="md" w="100%" ta="center">
-                  Floor {location.map.length - i}
-                </Title>
-                {v.map.map((v, i) => (
-                  <Group gap="xs" p="xs" key={i + "seatline"}>
-                    {v.map((v, i) => (
-                      <Box
-                        key={v.number + v.type + i + "b"}
-                        w={28}
-                        p="2"
-                        bg={computedColorScheme === "dark" ? "dark" : "blue.2"}
-                        style={{ borderRadius: "4pt" }}
-                      >
-                        {v.type === "seat" && (
-                          <Tooltip
-                            label={getSeatTooltip(
-                              v.accessibilityRating,
-                              event.seatsTaken.includes(v.number),
-                              myPlaces.includes(v.number)
-                            )}
-                            openDelay={250}
-                          >
-                            <IconArmchair2
-                              size={24}
-                              color={
-                                myPlaces.includes(v.number)
-                                  ? "cyan"
-                                  : event.seatsTaken.includes(v.number)
-                                  ? "gray"
-                                  : getColor(v.accessibilityRating)
-                              }
-                            />
-                          </Tooltip>
-                        )}
-                        {v.type === "food" && (
-                          <Tooltip
-                            label={getFoodToiletTooltip(
-                              v.accessibilityRating,
-                              "Food"
-                            )}
-                            openDelay={250}
-                          >
-                            <IconToolsKitchen2 size={24} color="purple" />
-                          </Tooltip>
-                        )}
-                        {v.type === "toilet" && (
-                          <Tooltip
-                            label={getFoodToiletTooltip(
-                              v.accessibilityRating,
-                              "Toilet"
-                            )}
-                            openDelay={250}
-                          >
-                            <IconToiletPaper size={24} color="blue" />
-                          </Tooltip>
-                        )}
-                        {v.type === "empty" && <IconX size={24} />}
-                        <Text w="100%" ta="center">
-                          {v.number === 0 ? "-" : v.number}
-                        </Text>
-                      </Box>
-                    ))}
-                  </Group>
-                ))}
-                <Box
-                  key={i + "stage"}
-                  w="100%"
-                  bg={computedColorScheme === "dark" ? "green.9" : "green.2"}
-                  style={{ borderRadius: "4pt" }}
-                >
-                  <Text w="100%" ta="center">
-                    Stage
-                  </Text>
-                </Box>
-              </Box>
-            ))}
           </Stack>
+          {[...location.map].reverse().map((v, i) => (
+            <Box key={i + "floor"}>
+              <Title key={i + "slvl"} order={2} p="md" w="100%" ta="center">
+                Floor {location.map.length - i}
+              </Title>
+              <Stack justify="center" align="stretch" w="100%">
+                <SimpleGrid
+                  cols={{ base: 1, "1200px": 2 }}
+                  p="md"
+                  w="auto"
+                  type="container"
+                >
+                  <Stack align="center" w="100%">
+                    {v.map.map((v, i) => (
+                      <Group gap="xs" p="xs" key={i + "seatline"}>
+                        {v.map((v, i) => (
+                          <Box
+                            key={v.number + v.type + i + "b"}
+                            w={28}
+                            p="2"
+                            bg={
+                              computedColorScheme === "dark" ? "dark" : "blue.2"
+                            }
+                            style={{ borderRadius: "4pt" }}
+                          >
+                            {v.type === "seat" && (
+                              <Tooltip
+                                label={getSeatTooltip(
+                                  v.accessibilityRating,
+                                  event.seatsTaken.includes(v.number),
+                                  myPlaces.includes(v.number)
+                                )}
+                                openDelay={250}
+                              >
+                                <IconArmchair2
+                                  size={24}
+                                  color={
+                                    myPlaces.includes(v.number)
+                                      ? "cyan"
+                                      : event.seatsTaken.includes(v.number)
+                                      ? "gray"
+                                      : getColor(v.accessibilityRating)
+                                  }
+                                />
+                              </Tooltip>
+                            )}
+                            {v.type === "food" && (
+                              <Tooltip
+                                label={getFoodToiletTooltip(
+                                  v.accessibilityRating,
+                                  "Food"
+                                )}
+                                openDelay={250}
+                              >
+                                <IconToolsKitchen2 size={24} color="purple" />
+                              </Tooltip>
+                            )}
+                            {v.type === "toilet" && (
+                              <Tooltip
+                                label={getFoodToiletTooltip(
+                                  v.accessibilityRating,
+                                  "Toilet"
+                                )}
+                                openDelay={250}
+                              >
+                                <IconToiletPaper size={24} color="blue" />
+                              </Tooltip>
+                            )}
+                            {v.type === "empty" && <IconX size={24} />}
+                            <Text w="100%" ta="center">
+                              {v.number === 0 ? "-" : v.number}
+                            </Text>
+                          </Box>
+                        ))}
+                      </Group>
+                    ))}
+                    <Box
+                      key={i + "stage"}
+                      w="auto"
+                      miw={300}
+                      bg={
+                        computedColorScheme === "dark" ? "green.9" : "green.2"
+                      }
+                      style={{ borderRadius: "4pt" }}
+                    >
+                      <Text w="100%" ta="center">
+                        Stage
+                      </Text>
+                    </Box>
+                  </Stack>
+                  <Center>
+                    <Image mah="50vh" w="auto" src={v.img} />
+                  </Center>
+                </SimpleGrid>
+              </Stack>
+            </Box>
+          ))}
         </Tabs.Panel>
       </Tabs>
     </Box>
