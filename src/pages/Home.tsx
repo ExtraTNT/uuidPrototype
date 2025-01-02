@@ -35,7 +35,6 @@ export const Home = () => {
             onChange={(event) => setSearch(event.currentTarget.value)}
             leftSection={<IconSearch size={16} />}
             onKeyDown={(e) => {
-              console.log(e.key)
               if (e.key.toLocaleLowerCase() === "enter")
                 navigate("/store/events/search/" + search)
             }}

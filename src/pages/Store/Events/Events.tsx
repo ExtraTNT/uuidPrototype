@@ -51,7 +51,6 @@ export const Events = () => {
       .filter((event) => new Date(event.opening) > new Date()) // Future events only
       .filter((event) => {
         const location = locations.get(event.location)
-        console.log(location)
         return (
           !loggedIn ||
           showAll ||

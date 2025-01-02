@@ -25,6 +25,7 @@ import {
   TextInput,
   PasswordInput,
   NumberInput,
+  Radio,
 } from "@mantine/core"
 import {
   IconArmchair2,
@@ -71,13 +72,14 @@ export const EventDetail = () => {
   const reviews = getUserRatingMock().filter((r) =>
     location.ratings.includes(r.id)
   )
+  const account = getAccountMock()
   const [reloadKey, setReloadKey] = useState(0)
   const forceReload = () => setReloadKey((prevKey) => prevKey + 1)
 
   const iconStyle = { width: rem(16), height: rem(16) }
 
-  const myPlaces = getAccountMock()
-    .tickets.filter((t) => t.split(".")[0] === id)
+  const myPlaces = account.tickets
+    .filter((t) => t.split(".")[0] === id)
     .map((v) => Number.parseInt(v.split(".")[1]))
 
   function getSeatTooltip(
@@ -89,7 +91,7 @@ export const EventDetail = () => {
     if (taken) return "Seat taken by someone"
     if (!getLoggedInContextMock().loggedIn)
       return "Seat free - log in to see additional accessibility information"
-    const accessibility = getAccountMock().wheelchair
+    const accessibility = account.wheelchair
     if (
       (accessibility === 1 && accessibilityRating === 1) ||
       (accessibility === 2 && accessibilityRating === 2)
@@ -107,7 +109,7 @@ export const EventDetail = () => {
   ): string {
     if (!getLoggedInContextMock().loggedIn)
       return type + " - log in to see additional accessibility information"
-    const accessibility = getAccountMock().wheelchair
+    const accessibility = account.wheelchair
     if (
       (accessibility === 1 && accessibilityRating === 1) ||
       (accessibility === 2 && accessibilityRating === 2)
@@ -131,7 +133,7 @@ export const EventDetail = () => {
     if (taken) return "Seat taken by someone"
     if (!getLoggedInContextMock().loggedIn)
       return "Seat free - log in to see additional accessibility information"
-    const accessibility = getAccountMock().wheelchair
+    const accessibility = account.wheelchair
     if (accessibility <= 1 && accessibility >= 3)
       return "Seat for wheelchair users only"
     if (
@@ -147,7 +149,7 @@ export const EventDetail = () => {
 
   function getColor(accessibilityRating: number): string {
     if (!getLoggedInContextMock().loggedIn) return "green"
-    const accessibility = getAccountMock().wheelchair
+    const accessibility = account.wheelchair
     if (accessibility <= 1 && accessibilityRating >= 3) return "orange"
     if (accessibility === 1 && accessibilityRating === 1) return "orange"
     if (accessibility === 2 && accessibilityRating === 2) return "orange"
@@ -166,16 +168,15 @@ export const EventDetail = () => {
       title: "Error",
       message:
         "This is a demo, you can't create a new account, use the account " +
-        getAccountMock().email +
+        account.email +
         " with the password " +
-        getAccountMock().password,
+        account.password,
       icon: xIcon,
       color: "red",
       position: "top-center",
     })
   }
   const login = () => {
-    const account = getAccountMock()
     if (account.email === email && account.password === passwd) {
       set("loggedInContext", { loggedIn: true })
       forceReload()
@@ -191,30 +192,48 @@ export const EventDetail = () => {
         title: "Wrong Email or Password",
         message:
           "Wrong email or password, as we are in demo mode, use the email " +
-          getAccountMock().email +
+          account.email +
           " with the password " +
-          getAccountMock().password,
+          account.password,
         icon: xIcon,
         color: "red",
         position: "top-center",
       })
     }
   }
+  const getCost = () => (selectedSeats.length + standingTickets) * event.price
 
   const [active, setActive] = useState(0)
+  const [highestStepVisited, setHighestStepVisited] = useState(active)
 
   const handleStepChange = (nextStep: number) => {
-    const isOutOfBounds = nextStep > 3 || nextStep < 0
+    const isOutOfBounds = nextStep > 4 || nextStep < 0
 
     if (isOutOfBounds) {
       return
     }
 
     setActive(nextStep)
+    setHighestStepVisited((hSC) => Math.max(hSC, nextStep))
   }
 
   const [selectedSeats, setSelectedSeats] = useState<Number[]>([])
   const [standingTickets, setStandingTickets] = useState(0)
+  const [paymentMethod, setPaymentMethod] = useState("bill")
+
+  const shouldAllowSelectStep = (step: number) =>
+    highestStepVisited >= step && active !== step && active !== 4
+
+  const buy = () => {
+    selectedSeats.forEach((s) => {
+      account.tickets.push(event.id + "." + s)
+    })
+    setSelectedSeats([])
+    for (let i = 0; i < standingTickets; i++) {
+      account.tickets.push(event.id + ".s")
+    }
+    set("account", account)
+  }
 
   return (
     <Box h="100%" p="md" key={reloadKey}>
@@ -270,7 +289,11 @@ export const EventDetail = () => {
             p="md"
             allowNextStepsSelect={false}
           >
-            <Stepper.Step label="Overview" description="Who plays when where?">
+            <Stepper.Step
+              label="Overview"
+              description="Who plays when where?"
+              allowStepSelect={shouldAllowSelectStep(0)}
+            >
               <Stack justify="flex-start" align="center" p="md">
                 <Title>
                   {band.name.toUpperCase()} - {setlist.name}
@@ -294,6 +317,7 @@ export const EventDetail = () => {
             <Stepper.Step
               label="Pick place"
               description="Pick where you want to seat"
+              allowStepSelect={shouldAllowSelectStep(1)}
             >
               <Stack justify="flex-start" align="center" p="md">
                 <Title w="100%" ta="center">
@@ -301,22 +325,30 @@ export const EventDetail = () => {
                 </Title>
                 <Group align="flex-end">
                   {location.standingPlaces && (
-                    <NumberInput
-                      label="Standing tickets"
-                      placeholder="Standing tickets"
-                      suffix=" Tickets"
-                      value={standingTickets}
-                      clampBehavior="strict"
-                      onChange={(e) =>
-                        setStandingTickets(
-                          typeof e === "number" ? e : Number.parseInt(e)
-                        )
+                    <Tooltip
+                      openDelay={250}
+                      label={
+                        "Standing places can be accessed by people who have / are: " +
+                        helpText[location.standignAccessibility]
                       }
-                      allowNegative={false}
-                      min={0}
-                      max={10}
-                      mt="md"
-                    />
+                    >
+                      <NumberInput
+                        label="Standing tickets"
+                        placeholder="Standing tickets"
+                        suffix=" Tickets"
+                        value={standingTickets}
+                        clampBehavior="strict"
+                        onChange={(e) =>
+                          setStandingTickets(
+                            typeof e === "number" ? e : Number.parseInt(e)
+                          )
+                        }
+                        allowNegative={false}
+                        min={0}
+                        max={10}
+                        mt="md"
+                      />
+                    </Tooltip>
                   )}
                   {(selectedSeats.length >= 1 || standingTickets >= 1) && (
                     <Button
@@ -330,14 +362,13 @@ export const EventDetail = () => {
                                 m.some(
                                   (m) =>
                                     selectedSeats.includes(m.number) &&
-                                    m.accessibilityRating >=
-                                      getAccountMock().wheelchair
+                                    m.accessibilityRating >= account.wheelchair
                                 )
                               )
                             ) ||
                             (standingTickets >= 0 &&
                               location.standignAccessibility >=
-                                getAccountMock().wheelchair)
+                                account.wheelchair)
                           )
                         )
                           notifications.show({
@@ -490,10 +521,11 @@ export const EventDetail = () => {
             <Stepper.Step
               label="Verify account"
               description="Confirm account or log in"
+              allowStepSelect={shouldAllowSelectStep(2)}
             >
               {getLoggedInContextMock().loggedIn ? (
                 <Stack justify="flex-start" align="center" p="md">
-                  <Title>You are logged in as {getAccountMock().email}</Title>
+                  <Title>You are logged in as {account.email}</Title>
                   <Group>
                     <Button
                       variant="outline"
@@ -556,13 +588,75 @@ export const EventDetail = () => {
                 </Stack>
               )}
             </Stepper.Step>
-            <Stepper.Step label="Pay" description="Select your payment option">
-              Step 3 content: Get full access
-              {/** TODO: show price and ask for bill, credit card or at entry */}
+            <Stepper.Step
+              label="Pay"
+              description="Select your payment option"
+              allowStepSelect={shouldAllowSelectStep(3)}
+            >
+              <Stack justify="flex-start" align="center" p="md">
+                <Title w="100%" ta="center">
+                  Payment
+                </Title>
+                <Text>
+                  {selectedSeats.length} Seat
+                  {selectedSeats.length > 1 ? "s" : ""} + {standingTickets}{" "}
+                  Standing ticket = {(getCost() / 100).toFixed()}.
+                  {getCost() % 100 === 0 ? "-" : getCost() % 100}
+                </Text>
+                <Radio.Group
+                  name="paymentSystem"
+                  label="Payment System"
+                  description="Select your payment system"
+                  value={paymentMethod}
+                  onChange={setPaymentMethod}
+                >
+                  <Group mt="xs">
+                    <Tooltip
+                      openDelay={250}
+                      label="You will get a bill in your mail within 2 - 5 days"
+                    >
+                      <Radio value="bill" label="Bill" />
+                    </Tooltip>
+                    <Tooltip openDelay={250} label="Pay with your creditcard">
+                      <Radio value="credit" label="Credit Card" />
+                    </Tooltip>
+                    <Tooltip
+                      openDelay={250}
+                      label="You pay directly at the location at the day of the event"
+                    >
+                      <Radio
+                        value="location"
+                        label="Directly at the location"
+                      />
+                    </Tooltip>
+                  </Group>
+                </Radio.Group>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    buy()
+                    handleStepChange(active + 1)
+                  }}
+                >
+                  Buy
+                </Button>
+              </Stack>
             </Stepper.Step>
             <Stepper.Completed>
-              Completed, click back button to get to previous step
-              {/** TODO: Show summary and add a button to get back to the start page*/}
+              <Stack justify="flex-start" align="center" p="md">
+                <Title w="100%" ta="center">
+                  Completed
+                </Title>
+                <Text>
+                  We receved your payment of {(getCost() / 100).toFixed()}.
+                  {getCost() % 100 === 0 ? "-" : getCost() % 100} than you for
+                  your purchase.
+                </Text>
+
+                <Button variant="outline" onClick={() => navigate("/")}>
+                  Back to Home
+                </Button>
+              </Stack>
             </Stepper.Completed>
           </Stepper>
         </Tabs.Panel>
@@ -591,7 +685,7 @@ export const EventDetail = () => {
               <Title order={2}>User Ratings</Title>
               {reviews.map((v) => (
                 <Group wrap="nowrap" p="md" key={v.id + "rating"}>
-                  <Avatar src={getAccountMock().avatar} radius="xl" size="lg" />
+                  <Avatar src={account.avatar} radius="xl" size="lg" />
                   <div>
                     <Rating readOnly value={v.rating} />
                     <Text size="sm" c="dimmed">
