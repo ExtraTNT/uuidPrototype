@@ -217,7 +217,7 @@ export const EventDetail = () => {
     setHighestStepVisited((hSC) => Math.max(hSC, nextStep))
   }
 
-  const [selectedSeats, setSelectedSeats] = useState<Number[]>([])
+  const [selectedSeats, setSelectedSeats] = useState<number[]>([])
   const [standingTickets, setStandingTickets] = useState(0)
   const [paymentMethod, setPaymentMethod] = useState("bill")
 
@@ -228,10 +228,16 @@ export const EventDetail = () => {
     selectedSeats.forEach((s) => {
       account.tickets.push(event.id + "." + s)
     })
+    event.seatsTaken.push(...selectedSeats)
     setSelectedSeats([])
     for (let i = 0; i < standingTickets; i++) {
       account.tickets.push(event.id + ".s")
     }
+    let eventMock = getEventMock()
+
+    eventMock = [event, ...eventMock.filter((e) => e.id !== event.id)]
+
+    set("event", eventMock)
     set("account", account)
   }
 
