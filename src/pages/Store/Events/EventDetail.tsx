@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { getEventMock } from "../../../Mock/Event"
 import { getBandMock } from "../../../Mock/Band"
 import { getSetlistMock } from "../../../Mock/SetList"
@@ -46,7 +46,7 @@ import { helpText } from "../../../utils/wheelchairMap"
 import { getUserRatingMock } from "../../../Mock/UserRating"
 import { getAccountMock } from "../../../Mock/Account"
 import { getLoggedInContextMock } from "../../../Mock/LoggedInContextMock"
-import { useState } from "react"
+import { useLayoutEffect, useState } from "react"
 import { notifications } from "@mantine/notifications"
 import {
   checkIcon,
@@ -57,8 +57,12 @@ import { set } from "../../../services/localObjectStorage"
 
 export const EventDetail = () => {
   const navigate = useNavigate()
-  navigate.toString()
-  // TODO: remove, only exists to let my linter shut the fuck up, till i actually implement this shit
+  const loc = useLocation()
+
+  // scroll to top of page after a page transition.
+  useLayoutEffect(() => {
+    document.documentElement.scrollTo({ top: 0, left: 0 })
+  }, [loc.pathname])
 
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
@@ -229,7 +233,6 @@ export const EventDetail = () => {
       account.tickets.push(event.id + "." + s)
     })
     event.seatsTaken.push(...selectedSeats)
-    setSelectedSeats([])
     for (let i = 0; i < standingTickets; i++) {
       account.tickets.push(event.id + ".s")
     }
