@@ -1,12 +1,4 @@
-import {
-  Box,
-  Center,
-  Collapse,
-  Flex,
-  Progress,
-  Text,
-  Title,
-} from "@mantine/core"
+import { Box, Center, Collapse, Flex, Progress, Title } from "@mantine/core"
 import { useTimeout } from "@mantine/hooks"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
