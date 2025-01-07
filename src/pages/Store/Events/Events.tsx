@@ -48,6 +48,7 @@ export const Events = () => {
     const loggedIn = getLoggedInContextMock().loggedIn
 
     const events = getEventMock()
+      .sort((a, b) => Number.parseInt(a.band) - Number.parseInt(b.band))
       .filter((event) => new Date(event.opening) > new Date()) // Future events only
       .filter((event) => {
         const location = locations.get(event.location)

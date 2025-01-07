@@ -1,8 +1,8 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom"
-import { getEventMock } from "../../../Mock/Event"
-import { getBandMock } from "../../../Mock/Band"
-import { getSetlistMock } from "../../../Mock/SetList"
-import { getLocationMock } from "../../../Mock/Location"
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { getEventMock } from "../../../Mock/Event";
+import { getBandMock } from "../../../Mock/Band";
+import { getSetlistMock } from "../../../Mock/SetList";
+import { getLocationMock } from "../../../Mock/Location";
 import {
   Box,
   Image,
@@ -26,7 +26,7 @@ import {
   PasswordInput,
   NumberInput,
   Radio,
-} from "@mantine/core"
+} from "@mantine/core";
 import {
   IconArmchair2,
   IconBuildingStore,
@@ -41,70 +41,70 @@ import {
   IconToiletPaper,
   IconToolsKitchen2,
   IconX,
-} from "@tabler/icons-react"
-import { helpText } from "../../../utils/wheelchairMap"
-import { getUserRatingMock } from "../../../Mock/UserRating"
-import { getAccountMock } from "../../../Mock/Account"
-import { getLoggedInContextMock } from "../../../Mock/LoggedInContextMock"
-import { useLayoutEffect, useState } from "react"
-import { notifications } from "@mantine/notifications"
+} from "@tabler/icons-react";
+import { helpText } from "../../../utils/wheelchairMap";
+import { getUserRatingMock } from "../../../Mock/UserRating";
+import { getAccountMock } from "../../../Mock/Account";
+import { getLoggedInContextMock } from "../../../Mock/LoggedInContextMock";
+import { useLayoutEffect, useState } from "react";
+import { notifications } from "@mantine/notifications";
 import {
   checkIcon,
   warnIcon,
   xIcon,
-} from "../../../components/NotificationIcons"
-import { set } from "../../../services/localObjectStorage"
+} from "../../../components/NotificationIcons";
+import { set } from "../../../services/localObjectStorage";
 
 export const EventDetail = () => {
-  const navigate = useNavigate()
-  const loc = useLocation()
+  const navigate = useNavigate();
+  const loc = useLocation();
 
   // scroll to top of page after a page transition.
   useLayoutEffect(() => {
-    document.documentElement.scrollTo({ top: 0, left: 0 })
-  }, [loc.pathname])
+    document.documentElement.scrollTo({ top: 0, left: 0 });
+  }, [loc.pathname]);
 
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
-  })
+  });
 
-  const { id } = useParams()
-  const event = getEventMock().filter((e) => e.id === id)[0]
-  const band = getBandMock().filter((b) => b.id === event.band)[0]
-  const setlist = getSetlistMock().filter((s) => s.id === event.setlist)[0]
-  const location = getLocationMock().filter((l) => l.id === event.location)[0]
+  const { id } = useParams();
+  const event = getEventMock().filter((e) => e.id === id)[0];
+  const band = getBandMock().filter((b) => b.id === event.band)[0];
+  const setlist = getSetlistMock().filter((s) => s.id === event.setlist)[0];
+  const location = getLocationMock().filter((l) => l.id === event.location)[0];
   const reviews = getUserRatingMock().filter((r) =>
     location.ratings.includes(r.id)
-  )
-  const account = getAccountMock()
-  const [reloadKey, setReloadKey] = useState(0)
-  const forceReload = () => setReloadKey((prevKey) => prevKey + 1)
+  );
+  const account = getAccountMock();
+  const [reloadKey, setReloadKey] = useState(0);
+  const forceReload = () => setReloadKey((prevKey) => prevKey + 1);
 
-  const iconStyle = { width: rem(16), height: rem(16) }
+  const iconStyle = { width: rem(16), height: rem(16) };
 
   const myPlaces = account.tickets
     .filter((t) => t.split(".")[0] === id)
-    .map((v) => Number.parseInt(v.split(".")[1]))
+    .map((v) => Number.parseInt(v.split(".")[1]));
 
   function getSeatTooltip(
     accessibilityRating: number,
     taken: boolean,
     mine: boolean
   ): string {
-    if (mine) return "Your seat"
-    if (taken) return "Seat taken by someone"
+    if (mine) return "Your seat";
+    if (taken) return "Seat taken by someone";
     if (!getLoggedInContextMock().loggedIn)
-      return "Seat free - log in to see additional accessibility information"
-    const accessibility = account.wheelchair
+      return "Seat free - log in to see additional accessibility information";
+    const accessibility = account.wheelchair;
     if (
       (accessibility === 1 && accessibilityRating === 1) ||
       (accessibility === 2 && accessibilityRating === 2)
     )
-      return "Seat free, but not recommended as a first choice, as it is harder to reach"
+      return "Seat free, but not recommended as a first choice, as it is harder to reach";
 
-    if (accessibilityRating >= accessibility) return "Seat free"
+    if (accessibilityRating >= accessibility) return "Seat free";
 
-    return "Seat free, but not accessible to you based on your given account settings"
+    return "Seat free, but not accessible to you based on your given account settings";
   }
 
   function getFoodToiletTooltip(
@@ -112,18 +112,18 @@ export const EventDetail = () => {
     type: string
   ): string {
     if (!getLoggedInContextMock().loggedIn)
-      return type + " - log in to see additional accessibility information"
-    const accessibility = account.wheelchair
+      return type + " - log in to see additional accessibility information";
+    const accessibility = account.wheelchair;
     if (
       (accessibility === 1 && accessibilityRating === 1) ||
       (accessibility === 2 && accessibilityRating === 2)
     )
-      return type + " - Not easy to reach for you"
+      return type + " - Not easy to reach for you";
 
     if (accessibilityRating >= accessibility)
-      return type + " - Easy to reach for you"
+      return type + " - Easy to reach for you";
 
-    return type + " - Unreachable to you"
+    return type + " - Unreachable to you";
   }
 
   const getSeatBuyTooltip = (
@@ -132,40 +132,40 @@ export const EventDetail = () => {
     mine: boolean,
     selected: boolean
   ) => {
-    if (mine) return "You already bought tickets for this seat"
-    if (selected) return "Seat currently selected by you"
-    if (taken) return "Seat taken by someone"
+    if (mine) return "You already bought tickets for this seat";
+    if (selected) return "Seat currently selected by you";
+    if (taken) return "Seat taken by someone";
     if (!getLoggedInContextMock().loggedIn)
-      return "Seat free - log in to see additional accessibility information"
-    const accessibility = account.wheelchair
+      return "Seat free - log in to see additional accessibility information";
+    const accessibility = account.wheelchair;
     if (accessibility <= 1 && accessibility >= 3)
-      return "Seat for wheelchair users only"
+      return "Seat for wheelchair users only";
     if (
       (accessibility === 1 && accessibilityRating === 1) ||
       (accessibility === 2 && accessibilityRating === 2)
     )
-      return "Seat free, but not recommended as a first choice, as it is harder to reach"
+      return "Seat free, but not recommended as a first choice, as it is harder to reach";
 
-    if (accessibilityRating >= accessibility) return "Seat free"
+    if (accessibilityRating >= accessibility) return "Seat free";
 
-    return "Seat free, but not accessible to you based on your given account settings"
-  }
+    return "Seat free, but not accessible to you based on your given account settings";
+  };
 
   function getColor(accessibilityRating: number): string {
-    if (!getLoggedInContextMock().loggedIn) return "green"
-    const accessibility = account.wheelchair
-    if (accessibility <= 1 && accessibilityRating >= 3) return "orange"
-    if (accessibility === 1 && accessibilityRating === 1) return "orange"
-    if (accessibility === 2 && accessibilityRating === 2) return "orange"
+    if (!getLoggedInContextMock().loggedIn) return "green";
+    const accessibility = account.wheelchair;
+    if (accessibility <= 1 && accessibilityRating >= 3) return "orange";
+    if (accessibility === 1 && accessibilityRating === 1) return "orange";
+    if (accessibility === 2 && accessibilityRating === 2) return "orange";
 
-    if (accessibilityRating >= accessibility) return "green"
+    if (accessibilityRating >= accessibility) return "green";
 
-    return "red"
+    return "red";
   }
 
-  const [email, setEmail] = useState<string>("")
+  const [email, setEmail] = useState<string>("");
 
-  const [passwd, setPasswd] = useState<string>("")
+  const [passwd, setPasswd] = useState<string>("");
 
   const register = () => {
     notifications.show({
@@ -178,19 +178,19 @@ export const EventDetail = () => {
       icon: xIcon,
       color: "red",
       position: "top-center",
-    })
-  }
+    });
+  };
   const login = () => {
     if (account.email === email && account.password === passwd) {
-      set("loggedInContext", { loggedIn: true })
-      forceReload()
+      set("loggedInContext", { loggedIn: true });
+      forceReload();
       notifications.show({
         title: "Logged In",
         message: "You are now logged in, enjoy",
         icon: checkIcon,
         color: "teal",
         position: "top-center",
-      })
+      });
     } else {
       notifications.show({
         title: "Wrong Email or Password",
@@ -202,47 +202,47 @@ export const EventDetail = () => {
         icon: xIcon,
         color: "red",
         position: "top-center",
-      })
+      });
     }
-  }
-  const getCost = () => (selectedSeats.length + standingTickets) * event.price
+  };
+  const getCost = () => (selectedSeats.length + standingTickets) * event.price;
 
-  const [active, setActive] = useState(0)
-  const [highestStepVisited, setHighestStepVisited] = useState(active)
+  const [active, setActive] = useState(0);
+  const [highestStepVisited, setHighestStepVisited] = useState(active);
 
   const handleStepChange = (nextStep: number) => {
-    const isOutOfBounds = nextStep > 4 || nextStep < 0
+    const isOutOfBounds = nextStep > 4 || nextStep < 0;
 
     if (isOutOfBounds) {
-      return
+      return;
     }
 
-    setActive(nextStep)
-    setHighestStepVisited((hSC) => Math.max(hSC, nextStep))
-  }
+    setActive(nextStep);
+    setHighestStepVisited((hSC) => Math.max(hSC, nextStep));
+  };
 
-  const [selectedSeats, setSelectedSeats] = useState<number[]>([])
-  const [standingTickets, setStandingTickets] = useState(0)
-  const [paymentMethod, setPaymentMethod] = useState("bill")
+  const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+  const [standingTickets, setStandingTickets] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState("bill");
 
   const shouldAllowSelectStep = (step: number) =>
-    highestStepVisited >= step && active !== step && active !== 4
+    highestStepVisited >= step && active !== step && active !== 4;
 
   const buy = () => {
     selectedSeats.forEach((s) => {
-      account.tickets.push(event.id + "." + s)
-    })
-    event.seatsTaken.push(...selectedSeats)
+      account.tickets.push(event.id + "." + s);
+    });
+    event.seatsTaken.push(...selectedSeats);
     for (let i = 0; i < standingTickets; i++) {
-      account.tickets.push(event.id + ".s")
+      account.tickets.push(event.id + ".s");
     }
-    let eventMock = getEventMock()
+    let eventMock = getEventMock();
 
-    eventMock = [event, ...eventMock.filter((e) => e.id !== event.id)]
+    eventMock = [event, ...eventMock.filter((e) => e.id !== event.id)];
 
-    set("event", eventMock)
-    set("account", account)
-  }
+    set("event", eventMock);
+    set("account", account);
+  };
 
   return (
     <Box h="100%" p="md" key={reloadKey}>
@@ -314,7 +314,7 @@ export const EventDetail = () => {
                 </Title>
                 <Button
                   onClick={(e) => {
-                    handleStepChange(active + 1)
+                    handleStepChange(active + 1);
                   }}
                 >
                   Buy {(event.price / 100).toFixed()}.
@@ -324,7 +324,7 @@ export const EventDetail = () => {
               </Stack>
             </Stepper.Step>
             <Stepper.Step
-              label="Pick place"
+              label="Pick Seat"
               description="Pick where you want to seat"
               allowStepSelect={shouldAllowSelectStep(1)}
             >
@@ -387,8 +387,8 @@ export const EventDetail = () => {
                             icon: warnIcon,
                             color: "orange",
                             position: "top-center",
-                          })
-                        handleStepChange(active + 1)
+                          });
+                        handleStepChange(active + 1);
                       }}
                     >
                       Next
@@ -432,13 +432,16 @@ export const EventDetail = () => {
                                   v.type !== "seat" ||
                                   event.seatsTaken.includes(v.number)
                                 )
-                                  return
+                                  return;
                                 if (selectedSeats.includes(v.number)) {
                                   setSelectedSeats(
                                     selectedSeats.filter((n) => n !== v.number)
-                                  )
+                                  );
                                 } else {
-                                  setSelectedSeats([v.number, ...selectedSeats])
+                                  setSelectedSeats([
+                                    v.number,
+                                    ...selectedSeats,
+                                  ]);
                                 }
                               }}
                               bg={
@@ -528,7 +531,7 @@ export const EventDetail = () => {
               </Stack>
             </Stepper.Step>
             <Stepper.Step
-              label="Verify account"
+              label="Verify Account"
               description="Confirm account or log in"
               allowStepSelect={shouldAllowSelectStep(2)}
             >
@@ -539,15 +542,15 @@ export const EventDetail = () => {
                     <Button
                       variant="outline"
                       onClick={() => {
-                        set("loggedInContext", { loggedIn: false })
-                        forceReload()
+                        set("loggedInContext", { loggedIn: false });
+                        forceReload();
                         notifications.show({
                           title: "Logged Out",
                           message: "You are no longer logged in, enjoy",
                           icon: checkIcon,
                           color: "teal",
                           position: "top-center",
-                        })
+                        });
                       }}
                       leftSection={<IconLogout size={14} />}
                     >
@@ -643,8 +646,8 @@ export const EventDetail = () => {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    buy()
-                    handleStepChange(active + 1)
+                    buy();
+                    handleStepChange(active + 1);
                   }}
                 >
                   Buy
@@ -732,15 +735,15 @@ export const EventDetail = () => {
                 label={(() => {
                   switch (location.accessibilityRating) {
                     case 1:
-                      return "Very bad accessibility"
+                      return "Very bad accessibility";
                     case 2:
-                      return "Bad accessibility"
+                      return "Bad accessibility";
                     case 3:
-                      return "Ok accessibility"
+                      return "Ok accessibility";
                     case 4:
-                      return "Good accessibility"
+                      return "Good accessibility";
                     case 5:
-                      return "Perfect or almost perfect accessibility"
+                      return "Perfect or almost perfect accessibility";
                   }
                 })()}
               >
@@ -972,5 +975,5 @@ export const EventDetail = () => {
         </Tabs.Panel>
       </Tabs>
     </Box>
-  )
-}
+  );
+};
