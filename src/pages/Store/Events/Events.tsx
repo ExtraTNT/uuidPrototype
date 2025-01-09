@@ -137,7 +137,7 @@ export const Events = () => {
                 />
               </Tooltip>
               <Tooltip
-                label="Uncheck, if you are disabled, but still want to search for events with standind places"
+                label="Uncheck, if you want to search for events with standing places accessible to you"
                 openDelay={250}
               >
                 <Checkbox
