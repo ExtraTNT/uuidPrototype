@@ -40,7 +40,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-12T19:00:00"),
     start: new Date("2025-07-12T20:00:00"),
     price: 5000,
-    seatsTaken: [1, 2, 3, 11, 12, 13, 36, 37, 39, 40],
+    seatsTaken: [1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 36, 37, 39, 40],
   },
   {
     id: "4",
@@ -50,7 +50,7 @@ const eventMock: EventMockType[] = [
     opening: new Date("2025-07-13T19:00:00"),
     start: new Date("2025-07-13T20:00:00"),
     price: 5995,
-    seatsTaken: [],
+    seatsTaken: [1, 2, 3, 4, 6, 7, 8, 9],
   },
   {
     id: "5",
