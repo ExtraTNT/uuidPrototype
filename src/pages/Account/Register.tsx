@@ -109,7 +109,7 @@ export const Register = () => {
   return (
     <>
       <Center>
-        <Stack align="center" justify="center">
+        <Stack align="center" justify="center" p="md">
           <Group align="center" style={{ position: "relative" }}>
             <Avatar src={accountMock.avatar} radius={75} size={150} />
             <FileButton
